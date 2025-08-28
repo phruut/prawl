@@ -125,10 +125,8 @@ class PrawlGUI:
                         dpg.add_spacer(height=0.5)
                         dpg.add_text('menu key presses', tag='menu_key_presses_text'); dpg.add_slider_int(label='times', min_value=1, max_value=6, default_value=int(config.get('menu_key_presses', 2)), tag='menu_key_presses')
                         with dpg.tooltip(dpg.last_item()): dpg.add_text('times to press the menu key (background key actions dont register so its defaut to twice, set to 1 when using direct input)', wrap= 190)
-                        dpg.add_text('key press delay', tag='menu_key_presses_delay_text'); dpg.add_slider_int(label='ms', min_value=0, max_value=1000, default_value=int(config.get('menu_key_presses_delay', 0)), tag='menu_key_presses_delay')
-                        with dpg.tooltip(dpg.last_item()): dpg.add_text('time to wait after each menu key press', wrap= 190)
                         dpg.add_text('disconnect delay'); dpg.add_slider_int(label='ms', min_value=100, max_value=1000, default_value=int(config.get('disconnect_delay', 100)), tag='wait_disconnect')
-                        with dpg.tooltip(dpg.last_item()): dpg.add_text('time to wait before switching to disconnect button (waiting for menu to pop up)', wrap= 190)
+                        with dpg.tooltip(dpg.last_item()): dpg.add_text('time to wait for the menu to pop up after pressing menu key', wrap= 190)
                         dpg.add_text('reconnect delay'); dpg.add_slider_int(label='seconds', min_value=3, max_value=20, default_value=int(config.get('reconnect_delay', 4)), tag='wait_reconnect')
                         with dpg.tooltip(dpg.last_item()): dpg.add_text('time to wait before reconnectng to the match', wrap= 190)
 
@@ -154,7 +152,7 @@ class PrawlGUI:
                             with dpg.tooltip(dpg.last_item()): dpg.add_text('change right key', tag='key_right_tooltip_text')
                             dpg.add_spacer(width=13)
                             dpg.add_button(label=config.get('key_throw', 'v'), tag='key_throw_button', width=26, height=26, callback=self.callbacks.hotkey_button, user_data='key_throw')
-                            with dpg.tooltip(dpg.last_item()): dpg.add_text('change light attack key', tag='key_throw_tooltip_text')
+                            with dpg.tooltip(dpg.last_item()): dpg.add_text('change throw / pickup key', tag='key_throw_tooltip_text')
                             dpg.add_button(label=config.get('key_light', 'c'), tag='key_light_button', width=26, height=26, callback=self.callbacks.hotkey_button, user_data='key_light')
                             with dpg.tooltip(dpg.last_item()): dpg.add_text('change light attack key', tag='key_light_tooltip_text')
                             dpg.add_button(label=config.get('key_heavy', 'x'), tag='key_heavy_button', width=26, height=26, callback=self.callbacks.hotkey_button, user_data='key_heavy')
@@ -242,7 +240,7 @@ class PrawlGUI:
                     dpg.add_button(label='help', width=203, height=20)
                     dpg.bind_item_theme(dpg.last_item(), '__centerTitleTheme')
 
-                with dpg.collapsing_header(label='instructions', default_open=True, bullet=True):
+                with dpg.collapsing_header(label='instructions', bullet=True):
                     dpg.add_text('1. make a custom game room', indent=8)
                     dpg.add_text('2. apply the settings below', indent=8)
                     dpg.add_text('3. select a legend to farm', indent=8)

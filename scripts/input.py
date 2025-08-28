@@ -43,18 +43,22 @@ class KeySequence:
 
     def _keypress(self, hwnd, key, hold=70, delay=150, direct=False):
         vk = win32api.VkKeyScan(key) if isinstance(key, str) else key
+        hold = random.uniform((hold-10),(hold+20))/1000
+        delay = random.uniform(delay, (delay+40))/1000
         if direct:
-            self.keyboard.keypress(key, hold)
-            time.sleep(random.uniform(delay, (delay+40))/1000)
+            self.keyboard.press(key)
+            time.sleep(hold)
+            self.keyboard.release(key)
+            time.sleep(delay)
         else:
             win32api.SendMessage(hwnd, win32con.WM_KEYDOWN, vk, 0)
-            time.sleep(random.uniform((hold-10),(hold+20))/1000)
+            time.sleep(hold)
             win32api.SendMessage(hwnd, win32con.WM_KEYUP, vk, 0)
-            time.sleep(random.uniform(delay, (delay+40))/1000)
+            time.sleep(delay)
 
-    def _build(self, time_d, time_a, menu_k, hwnd):
-        left, up, down, esc = self.config['key_left'], self.config['key_up'], self.config['key_down'], win32con.VK_ESCAPE
-        light, heavy, throw = self.config['key_light'], self.config['key_heavy'], self.config['key_throw']
+    def _build(self, time_d, time_c, menu_k, hwnd):
+        left_k, up_k, down_k, esc = self.config['key_left'], self.config['key_up'], self.config['key_down'], win32con.VK_ESCAPE
+        throw_k, light_k, heavy_k = self.config['key_throw'], self.config['key_light'], self.config['key_heavy']
 
         sequences_data = {
             'wait_restart': [
@@ -62,29 +66,29 @@ class KeySequence:
             ],
             'spam_menu': [
                 ('status', 'spamming through menu!'),
-                ('press', light, {'count': 'start_spam'}),
+                ('press', light_k, {'count': 'start_spam'}),
                 ('countdown', 'wait_gameload', 'waiting for game {}...'),
             ],
             'open_menu': [
                 ('status', 'open esc menu'),
-                ('press', menu_k, {'count': 'menu_key_presses', 'delay_tag': 'menu_key_presses_delay'}),
+                ('press', menu_k, {'count': 'menu_key_presses'}),
             ],
             'disconnect': [
                 ('status', 'wait disconnect delay'),
                 ('wait', 'wait_disconnect'),
-                ('press', up),
-                ('press', light),
+                ('press', up_k),
+                ('press', light_k),
             ],
             'reconnect': [
                 ('countdown', 'wait_reconnect', 'reconnecting in {}...'),
                 ('status', 'pressing...'),
-                ('press', light, {'count': 2}),
+                ('press', light_k, {'count': 2}),
             ],
             'open_menu_fix': [
                 ('status', 'esc menu fix...'),
                 ('press', menu_k),
-                ('press', up),
-                ('press', light),
+                ('press', up_k),
+                ('press', light_k),
             ],
             'open_menu_hold': [
                 ('status', 'open esc menu (hold)'),
@@ -92,31 +96,31 @@ class KeySequence:
                 ('press', menu_k, {'hold': 2}),
             ],
             'lobby_setup_game_rules': [
-                ('status', 'GAME RULES'), ('press', heavy),
-                ('status', 'selecting CREW BATTLE'), ('press', left, {'count': 6}),
-                ('status', 'setting LIVES to 99'), ('press', down, {'count': 3}), ('press', left, {'count': 3}),
-                ('status', f'setting MATCH TIME {dpg.get_value("match_time")}'), ('press', down), ('press', time_d, {'count': time_a}),
-                ('status', 'setting DAMAGE'), ('press', down, {'count': 2}), ('press', left, {'count': 5}),
-                ('status', 'turning gadgets off'), ('press', down, {'count': 2}), ('press', left),
-                ('status', 'maps to Tournament 1v1'), ('press', down, {'count': 3}), ('press', left, {'count': 2}),
-                ('status', 'setting MAX PLAYERS to 2'), ('press', down), ('press', left, {'count': 2}),
+                ('status', 'GAME RULES'), ('press', heavy_k),
+                ('status', 'selecting CREW BATTLE'), ('press', left_k, {'count': 6}),
+                ('status', 'setting LIVES to 99'), ('press', down_k, {'count': 3}), ('press', left_k, {'count': 3}),
+                ('status', f'setting MATCH TIME {dpg.get_value("match_time")}'), ('press', down_k), ('press', time_d, {'count': time_c}),
+                ('status', 'setting DAMAGE'), ('press', down_k, {'count': 2}), ('press', left_k, {'count': 5}),
+                ('status', 'turning gadgets off'), ('press', down_k, {'count': 2}), ('press', left_k),
+                ('status', 'maps to Tournament 1v1'), ('press', down_k, {'count': 3}), ('press', left_k, {'count': 2}),
+                ('status', 'setting MAX PLAYERS to 2'), ('press', down_k), ('press', left_k, {'count': 2}),
             ],
             'lobby_setup_lobby': [
                 ('status', 'LOBBY'), ('press', ']'),
-                ('status', 'turning off FRIENDS'), ('press', down, {'count': 3}), ('press', left),
-                ('status', 'turning off CLANMATES'), ('press', down), ('press', left),
-                ('status', 'setting MAP CHOOSING to Random'), ('press', down, {'count': 2}), ('press', left, {'count': 2}),
-                ('status', 'turning on ALLOW HANDICAPS'), ('press', down, {'count': 2}), ('press', left),
-                ('status', 'closing menu'), ('press', light, {'delay': 0.5}),
-                ('status', 'opening MANAGE PARTY menu'), ('press', throw),
-                ('status', 'adding and opening BOT menu'), ('press', light, {'count': 2, 'delay': 0.5}),
-                ('status', 'set LIVES to 89'), ('press', down), ('press', left, {'count': 10}),
-                ('status', 'set Dmg Done 50%'), ('press', down), ('press', left, {'count': 5}),
-                ('status', 'set Dmg Taken 50%'), ('press', down), ('press', left, {'count': 5}),
-                ('status', 'switching to P1 menu'), ('press', light), ('press', up), ('press', light),
-                ('status', 'set Dmg Done 50%'), ('press', down, {'count': 2}), ('press', left, {'count': 5}),
-                ('status', 'set Dmg Taken 50%'), ('press', down), ('press', left, {'count': 5}),
-                ('status', 'close MANAGE PARTY menu'), ('press', throw)
+                ('status', 'turning off FRIENDS'), ('press', down_k, {'count': 3}), ('press', left_k),
+                ('status', 'turning off CLANMATES'), ('press', down_k), ('press', left_k),
+                ('status', 'setting MAP CHOOSING to Random'), ('press', down_k, {'count': 2}), ('press', left_k, {'count': 2}),
+                ('status', 'turning on ALLOW HANDICAPS'), ('press', down_k, {'count': 2}), ('press', left_k),
+                ('status', 'closing menu'), ('press', light_k, {'delay': 0.5}),
+                ('status', 'opening MANAGE PARTY menu'), ('press', throw_k),
+                ('status', 'adding and opening BOT menu'), ('press', light_k, {'count': 2, 'delay': 0.5}),
+                ('status', 'set LIVES to 89'), ('press', down_k), ('press', left_k, {'count': 10}),
+                ('status', 'set Dmg Done 50%'), ('press', down_k), ('press', left_k, {'count': 5}),
+                ('status', 'set Dmg Taken 50%'), ('press', down_k), ('press', left_k, {'count': 5}),
+                ('status', 'switching to P1 menu'), ('press', light_k), ('press', up_k), ('press', light_k),
+                ('status', 'set Dmg Done 50%'), ('press', down_k, {'count': 2}), ('press', left_k, {'count': 5}),
+                ('status', 'set Dmg Taken 50%'), ('press', down_k), ('press', left_k, {'count': 5}),
+                ('status', 'close MANAGE PARTY menu'), ('press', throw_k)
             ],
             'lobby_setup_finish': [
                 ('press', esc),
@@ -152,10 +156,7 @@ class KeySequence:
                     num_repeats = dpg.get_value(count_val) if isinstance(count_val, str) else count_val
 
                     hold_default = overrides.get('hold', dpg.get_value('keypress_hold'))
-                    delay_ms_tag = overrides.get('delay_tag')
                     delay_after = overrides.get('delay', 0)
-                    if delay_ms_tag and dpg.does_item_exist(delay_ms_tag):
-                        delay_after = dpg.get_value(delay_ms_tag) / 1000
 
                     for _ in range(num_repeats):
                         action = (lambda k=key, h=hold_default: self._keypress(hwnd, k, h, dpg.get_value('keypress_delay'), dpg.get_value('direct_input')), delay_after)
@@ -170,10 +171,10 @@ class KeySequence:
             l_scroll = (start - target) % pos
             return (self.config['key_right'], r_scroll) if r_scroll <= l_scroll else (self.config['key_left'], l_scroll)
 
-        TIME_D, TIME_A = scrolls(20, dpg.get_value('match_time'))
+        TIME_D, TIME_C = scrolls(20, dpg.get_value('match_time'))
         MENU_K = win32con.VK_RETURN if dpg.get_value('open_menu_enter') else win32con.VK_ESCAPE
 
-        action_map = self._build(TIME_D, TIME_A, MENU_K, hwnd)
+        action_map = self._build(TIME_D, TIME_C, MENU_K, hwnd)
         actions = [action for seq in sequences if seq in action_map for action in action_map[seq]]
         for action, delay in actions:
             if not is_running(): break
