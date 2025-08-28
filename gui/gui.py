@@ -135,7 +135,7 @@ class PrawlGUI:
                     with dpg.tree_node(label='input config'):
                         dpg.add_spacer(height=0.5)
                         dpg.add_checkbox(label='direct input mode', tag='direct_input', default_value=bool(config.get('direct_input', False)))
-                        with dpg.tooltip(dpg.last_item()): dpg.add_text('will not work in the background! try this if you are experiencing issues with inputs, and set the menu key presses to 1', wrap= 190)
+                        with dpg.tooltip(dpg.last_item()): dpg.add_text('wont work in background! try this if you are having issues with inputs, and set "menu key presses" to 1', wrap= 190)
                         dpg.add_spacer(height=0.5)
                         with dpg.group(horizontal=True):
                             dpg.add_button(label='', width=26, height=26)
