@@ -123,7 +123,7 @@ class KeySequence:
                 ('status', 'set Dmg Taken 50%'), ('press', down_k), ('press', left_k, {'count': 5}),
                 ('status', 'close MANAGE PARTY menu'), ('press', throw_k)
             ],
-            'lobby_setup_finish': [
+            'lobby_setup_exit': [
                 ('press', light_k, {'delay': 0.5}),
             ]
         }
