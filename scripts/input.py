@@ -57,7 +57,7 @@ class KeySequence:
             time.sleep(delay)
 
     def _build(self, time_d, time_c, menu_k, hwnd):
-        left_k, up_k, down_k, esc = self.config['key_left'], self.config['key_up'], self.config['key_down'], win32con.VK_ESCAPE
+        left_k, up_k, down_k = self.config['key_left'], self.config['key_up'], self.config['key_down']
         throw_k, light_k, heavy_k = self.config['key_throw'], self.config['key_light'], self.config['key_heavy']
 
         sequences_data = {
@@ -95,7 +95,7 @@ class KeySequence:
                 ('press', menu_k, {'count': 2}),
                 ('press', menu_k, {'hold': 2}),
             ],
-            'lobby_setup_game_rules': [
+            'lobby_setup_gamerule': [
                 ('status', 'GAME RULES'), ('press', heavy_k),
                 ('status', 'selecting CREW BATTLE'), ('press', left_k, {'count': 6}),
                 ('status', 'setting LIVES to 99'), ('press', down_k, {'count': 3}), ('press', left_k, {'count': 3}),
@@ -123,8 +123,11 @@ class KeySequence:
                 ('status', 'set Dmg Taken 50%'), ('press', down_k), ('press', left_k, {'count': 5}),
                 ('status', 'close MANAGE PARTY menu'), ('press', throw_k)
             ],
-            'lobby_setup_exit': [
+            'lobby_setup_exit_menu': [
                 ('press', light_k, {'delay': 0.5}),
+            ],
+            'stop_timer': [
+                ('status', 'stopped')
             ]
         }
 

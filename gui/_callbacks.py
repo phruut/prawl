@@ -248,14 +248,14 @@ class Callbacks:
         if self.state['hwnd']:
             dpg.configure_item('run_button', label='ä')
             dpg.configure_item('run_button_tooltip', default_value='stop')
-            self.timer.start(0, ['lobby_setup_game_rules', 'lobby_setup_exit'])
+            self.timer.start(0, ['lobby_setup_gamerule', 'lobby_setup_exit_menu', 'stop_timer'])
 
     def full_lobby_setup_start(self):
         self.state['hwnd'] = window.find()
         if self.state['hwnd']:
             dpg.configure_item('run_button', label='ä')
             dpg.configure_item('run_button_tooltip', default_value='stop')
-            self.timer.start(0, ['lobby_setup_game_rules', 'lobby_setup_lobby', 'lobby_setup_exit', 'lobby_setup_party'])
+            self.timer.start(0, ['lobby_setup_gamerule', 'lobby_setup_lobby', 'lobby_setup_exit_menu', 'lobby_setup_party', 'stop_timer'])
 
     # ---------------------------------------------------
 

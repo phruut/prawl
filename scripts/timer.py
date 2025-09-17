@@ -56,7 +56,7 @@ class Timer:
             self.keyseq.action(self.sequence, lambda: self.running, self.state['hwnd'])
             self.pressing = False
 
-            if 'lobby_setup_finish' in self.sequence:
+            if 'stop_timer' in self.sequence:
                 self.stop()
                 return
 
