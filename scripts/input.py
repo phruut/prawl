@@ -111,7 +111,8 @@ class KeySequence:
                 ('status', 'turning off CLANMATES'), ('press', down_k), ('press', left_k),
                 ('status', 'setting MAP CHOOSING to Random'), ('press', down_k, {'count': 2}), ('press', left_k, {'count': 2}),
                 ('status', 'turning on ALLOW HANDICAPS'), ('press', down_k, {'count': 2}), ('press', left_k),
-                ('status', 'closing menu'), ('press', light_k, {'delay': 0.5}),
+            ],
+            'lobby_setup_party': [
                 ('status', 'opening MANAGE PARTY menu'), ('press', throw_k),
                 ('status', 'adding and opening BOT menu'), ('press', light_k, {'count': 2, 'delay': 0.5}),
                 ('status', 'set LIVES to 89'), ('press', down_k), ('press', left_k, {'count': 10}),
@@ -123,8 +124,7 @@ class KeySequence:
                 ('status', 'close MANAGE PARTY menu'), ('press', throw_k)
             ],
             'lobby_setup_finish': [
-                ('press', esc),
-                ('status', 'finished lobby setup'),
+                ('press', light_k, {'delay': 0.5}),
             ]
         }
 

@@ -152,7 +152,7 @@ class PrawlGUI:
                             with dpg.tooltip(dpg.last_item()): dpg.add_text('change right key', tag='key_right_tooltip_text')
                             dpg.add_spacer(width=13)
                             dpg.add_button(label=config.get('key_throw', 'v'), tag='key_throw_button', width=26, height=26, callback=self.callbacks.hotkey_button, user_data='key_throw')
-                            with dpg.tooltip(dpg.last_item()): dpg.add_text('change throw / pickup key', tag='key_throw_tooltip_text')
+                            with dpg.tooltip(dpg.last_item()): dpg.add_text('change throw weapon key', tag='key_throw_tooltip_text')
                             dpg.add_button(label=config.get('key_light', 'c'), tag='key_light_button', width=26, height=26, callback=self.callbacks.hotkey_button, user_data='key_light')
                             with dpg.tooltip(dpg.last_item()): dpg.add_text('change light attack key', tag='key_light_tooltip_text')
                             dpg.add_button(label=config.get('key_heavy', 'x'), tag='key_heavy_button', width=26, height=26, callback=self.callbacks.hotkey_button, user_data='key_heavy')
