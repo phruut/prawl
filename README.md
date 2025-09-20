@@ -33,7 +33,7 @@ _please see the [wiki](https://github.com/phruut/prawl/wiki) for more informatio
 - [ ] dynamic ui scaling (maaaybe)
 
 ## 🔎download
-you can find the (old) compiled script in the [releases page](https://github.com/phruut/prawl/releases), or [click here to download](https://github.com/phruut/prawl/releases/download/241209/farm_1209.exe)
+you can find the (old) compiled farm.py in the [releases page](https://github.com/phruut/prawl/releases), or [click here to download](https://github.com/phruut/prawl/releases/download/241209/farm_1209.exe)
 > [!warning]
 > your anti-virus may flag this executable as a threat, as it interacts with Win32 API for sending key inputs and cmd for launching brawlhalla
 
