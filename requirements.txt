@@ -1,6 +1,4 @@
 dearpygui
 pywin32
 requests
-
-# if you are on windows
 pywinstyles
