@@ -9,7 +9,7 @@ def get_platform():
     if platform.lower().startswith('win'):
         return platform
     else:
-        raise OSError('unsupported operating system')
+        print('unsupported operating system, please use windows!')
 
 # handles paths properly when compiled or running from source
 def script_dir():
@@ -22,7 +22,7 @@ def script_dir():
 
 class Config:
     def __init__(self, filepath='config.ini'):
-        self.version = '0.1.0'
+        self.version = '0.1.2'
         self.filepath = os.path.join(script_dir(), filepath)
         self.icon = os.path.join(script_dir(), 'res/prawl-app.ico')
         self.main_font = os.path.join(script_dir(), 'res/cq-pixel-min.ttf')
@@ -35,7 +35,6 @@ class Config:
             'game_restart_delay': 4,
             'game_load_time': 15,
             'menu_key_presses': 2,
-            'menu_key_presses_delay': 0,
             'disconnect_delay': 100,
             'reconnect_delay': 4,
             'open_menu_default': True,
@@ -96,52 +95,16 @@ class Config:
             except ValueError:
                 self.data[key] = default_value
 
-
     def save(self):
-        config_to_save = {
-            'match_time': 'match_time',
-            'timer_sound': 'timer_sound',
-            'always_on_top': 'always_on_top',
-            'game_start_spam': 'start_spam',
-            'game_restart_delay': 'wait_restart',
-            'game_load_time': 'wait_gameload',
-            'menu_key_presses': 'menu_key_presses',
-            'menu_key_presses_delay': 'menu_key_presses_delay',
-            'disconnect_delay': 'wait_disconnect',
-            'reconnect_delay': 'wait_reconnect',
-            'open_menu_default': 'open_menu_default',
-            'open_menu_fix': 'open_menu_fix',
-            'open_menu_fix2': 'open_menu_fix2',
-            'open_menu_hold': 'open_menu_hold',
-            'open_menu_enter': 'open_menu_enter',
-            'direct_input': 'direct_input',
-            'keypress_hold': 'keypress_hold',
-            'keypress_delay': 'keypress_delay',
-            'beep_frequency': 'beep_frequency',
-            'beep_duration': 'beep_duration',
-            'rate_limit_detect': 'rate_limit_detect',
-            'rate_limit_wait': 'rate_limit_wait',
-            'rate_limit_wait_time': 'rate_limit_wait_time',
-            'max_games': 'max_games',
-            'max_games_amount': 'max_games_amount',
-            'auto_launch': 'auto_launch',
-            'key_light': 'key_light',
-            'key_heavy': 'key_heavy',
-            'key_throw': 'key_throw',
-            'key_left': 'key_left',
-            'key_up': 'key_up',
-            'key_right': 'key_right',
-            'key_down': 'key_down',
-        }
-
         if not self.config.has_section('settings'):
             self.config.add_section('settings')
 
-        for config_key, dpg_tag in config_to_save.items():
+        for key in self.defaults.keys():
+            dpg_tag = key
             if dpg.does_item_exist(dpg_tag):
                 value = dpg.get_value(dpg_tag)
-                self.data[config_key] = value
-                self.config.set('settings', config_key, str(value))
+                self.data[key] = value
+                self.config.set('settings', key, str(value))
 
         with open(self.filepath, 'w') as f:
             self.config.write(f)
