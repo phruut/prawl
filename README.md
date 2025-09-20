@@ -1,7 +1,9 @@
-gold and exp farming timer script for **brawlhalla patch 9.11** [(download)](https://github.com/phruut/prawl/releases/latest)\
+gold and exp farming timer script for **brawlhalla patch 9.12**\
 please see the [wiki](https://github.com/phruut/prawl/wiki) for more information about the script\
-help/dev server: https://discord.gg/2HDmuqqq9p
+help/dev server: https://discord.gg/2HDmuqqq9p  
 video tutorial: https://youtu.be/SWuSntfHioQ
+
+<img width="277" height="162" alt="prawl-0 1 2" src="https://github.com/user-attachments/assets/54e57536-92c7-47cb-8fcb-43ab7b868dcd" />
 
 ## 💡important
 add this steam startup option
@@ -30,9 +32,9 @@ add this steam startup option
 - [ ] dynamic ui scaling (maaaybe)
 
 ## 🔎download
-you can find the compiled script in the [releases page](https://github.com/phruut/prawl/releases), or [click here to download](https://github.com/phruut/prawl/releases/download/241209/farm_1209.exe)
+you can find the (old) compiled script in the [releases page](https://github.com/phruut/prawl/releases), or [click here to download](https://github.com/phruut/prawl/releases/download/241209/farm_1209.exe)
 > [!warning]
-> your anti-virus may flag this executable as a threat, as it interacts with Win32 API for sending key inputs
+> your anti-virus may flag this executable as a threat, as it interacts with Win32 API for sending key inputs and cmd for launching brawlhalla
 
 ## 🚀manual install
 ```bash
