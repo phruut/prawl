@@ -204,10 +204,14 @@ class Callbacks:
         elif self.timing_count == 2:
             dpg.configure_item('reset_general_button_text', show=False)
             dpg.configure_item('reset_general_button_tooltip', default_value='reset all general settings')
-            dpg.set_value('start_spam', 10); dpg.set_value('wait_restart', 4); dpg.set_value('wait_gameload', 15)
-            dpg.set_value('menu_key_presses', 2); dpg.set_value('menu_key_presses_delay', 0)
-            dpg.set_value('wait_disconnect', 100); dpg.set_value('wait_reconnect', 4)
-            dpg.set_value('keypress_hold', 70); dpg.set_value('keypress_delay', 150)
+            dpg.set_value('start_spam', 10)
+            dpg.set_value('wait_restart', 4)
+            dpg.set_value('wait_gameload', 15)
+            dpg.set_value('menu_key_presses', 2)
+            dpg.set_value('wait_disconnect', 100)
+            dpg.set_value('wait_reconnect', 4)
+            dpg.set_value('keypress_hold', 70)
+            dpg.set_value('keypress_delay', 150)
             self.timing_count = 0
             self.timing_timer.cancel()
 
@@ -216,7 +220,7 @@ class Callbacks:
     def select_open_menu_default(self):
         if not dpg.get_value('open_menu_default'): dpg.set_value('open_menu_default', True)
         else: dpg.configure_item('open_menu_fix', enabled=True); dpg.configure_item('open_menu_fix2', enabled=True)
-        for tag in ['menu_key_presses', 'menu_key_presses_delay', 'menu_key_presses_text', 'menu_key_presses_delay_text']:
+        for tag in ['menu_key_presses', 'menu_key_presses_text']:
             dpg.configure_item(tag, show=True)
         dpg.set_value('open_menu_hold', False)
 
@@ -229,7 +233,7 @@ class Callbacks:
     def select_open_menu_hold(self):
         if not dpg.get_value('open_menu_hold'): dpg.set_value('open_menu_hold', True)
         dpg.configure_item('open_menu_fix', enabled=False); dpg.configure_item('open_menu_fix2', enabled=False)
-        for tag in ['menu_key_presses', 'menu_key_presses_delay', 'menu_key_presses_text', 'menu_key_presses_delay_text']:
+        for tag in ['menu_key_presses', 'menu_key_presses_text']:
             dpg.configure_item(tag, show=False)
         dpg.set_value('open_menu_default', False); dpg.set_value('open_menu_fix', False)
 
