@@ -3,6 +3,8 @@ please see the [wiki](https://github.com/phruut/prawl/wiki) for more information
 help/dev server: https://discord.gg/2HDmuqqq9p  
 video tutorial: https://youtu.be/SWuSntfHioQ
 
+<img width="277" height="162" alt="prawl-0 1 2" src="https://github.com/user-attachments/assets/54e57536-92c7-47cb-8fcb-43ab7b868dcd" />
+
 ## 💡important
 add this steam startup option
 ```
