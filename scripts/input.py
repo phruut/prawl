@@ -33,8 +33,8 @@ class KeyListener:
             time.sleep(0.01)
 
 class KeySequence:
-    def __init__(self, config, keyboard: Keyboard):
-        self.keyboard = keyboard
+    def __init__(self, config):
+        self.keyboard = Keyboard()
         self.config = config
         self._cache = None
         self._last_d = None
@@ -44,8 +44,9 @@ class KeySequence:
     def _keypress(self, hwnd, key, hold=70, delay=150, direct=False):
         vk = win32api.VkKeyScan(key) if isinstance(key, str) else key
         hold = random.uniform((hold-10),(hold+20))/1000
-        delay = random.uniform(delay, (delay+40))/1000
+        delay = random.uniform((delay-5),(delay+20))/1000
         if direct:
+            activate(hwnd)
             self.keyboard.press(key)
             time.sleep(hold)
             self.keyboard.release(key)
@@ -55,6 +56,25 @@ class KeySequence:
             time.sleep(hold)
             win32api.SendMessage(hwnd, win32con.WM_KEYUP, vk, 0)
             time.sleep(delay)
+
+    def _release_all(self, hwnd):
+        release_keys = [
+            'key_left', 'key_up', 'key_down', 'key_right',
+            'key_light', 'key_heavy', 'key_throw'
+        ]
+        if dpg.get_value('direct_input'):
+            for key in release_keys:
+                try:
+                    self.keyboard.release(self.config[key_name])
+                except:
+                    pass
+        else:
+            for key in release_keys:
+                try:
+                    vk = win32api.VkKeyScan(self.config[key]) if isinstance(key, str) else self.config[key]
+                    win32api.SendMessage(hwnd, win32con.WM_KEYUP, vk, 0)
+                except:
+                    pass
 
     def _build(self, time_d, time_c, menu_k, hwnd):
         left_k, up_k, down_k = self.config['key_left'], self.config['key_up'], self.config['key_down']
@@ -71,6 +91,7 @@ class KeySequence:
             ],
             'open_menu': [
                 ('status', 'open esc menu'),
+                #('press', light_k, {'count': 1}), # fixes esc not opening maybe?
                 ('press', menu_k, {'count': 'menu_key_presses'}),
             ],
             'disconnect': [
@@ -83,12 +104,6 @@ class KeySequence:
                 ('countdown', 'wait_reconnect', 'reconnecting in {}...'),
                 ('status', 'pressing...'),
                 ('press', light_k, {'count': 2}),
-            ],
-            'open_menu_fix': [
-                ('status', 'esc menu fix...'),
-                ('press', menu_k),
-                ('press', up_k),
-                ('press', light_k),
             ],
             'open_menu_hold': [
                 ('status', 'open esc menu (hold)'),
@@ -107,6 +122,7 @@ class KeySequence:
             ],
             'lobby_setup_lobby': [
                 ('status', 'LOBBY'), ('press', ']'),
+                ('wait', 'keypress_delay'),
                 ('status', 'turning off FRIENDS'), ('press', down_k, {'count': 3}), ('press', left_k),
                 ('status', 'turning off CLANMATES'), ('press', down_k), ('press', left_k),
                 ('status', 'setting MAP CHOOSING to Random'), ('press', down_k, {'count': 2}), ('press', left_k, {'count': 2}),
@@ -181,7 +197,6 @@ class KeySequence:
         actions = [action for seq in sequences if seq in action_map for action in action_map[seq]]
         for action, delay in actions:
             if not is_running(): break
-            if dpg.get_value('direct_input'): activate(hwnd)
             action()
             if delay >= 1:
                 for _ in range(int(delay)):
