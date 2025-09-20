@@ -118,7 +118,7 @@ def create_themes():
             dpg.add_theme_color(dpg.mvThemeCol_ButtonActive, main_col_active)
 
             # sliders
-            dpg.add_theme_style(dpg.mvStyleVar_GrabRounding, 8)
+            dpg.add_theme_style(dpg.mvStyleVar_GrabRounding, 3)
             dpg.add_theme_style(dpg.mvStyleVar_GrabMinSize, 4)
             dpg.add_theme_color(dpg.mvThemeCol_SliderGrab, main_col_interact)
             dpg.add_theme_color(dpg.mvThemeCol_SliderGrabActive, main_col_bg_secondary)

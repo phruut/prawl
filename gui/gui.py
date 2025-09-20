@@ -109,33 +109,33 @@ class PrawlGUI:
                     with dpg.tree_node(label='disconnect / reconnect'):
                         dpg.add_spacer(height=0.5); dpg.add_text('mode')
                         dpg.add_checkbox(label='default', tag='open_menu_default', default_value=bool(config.get('open_menu_default', True)), callback=self.callbacks.select_open_menu_default)
-                        with dpg.tooltip(dpg.last_item()): dpg.add_text('default mode c:', wrap= 190)
+                        with dpg.tooltip(dpg.last_item()): dpg.add_text('default mode c:', wrap=190)
                         dpg.add_spacer(height=0.5)
                         with dpg.group(horizontal=True):
                             dpg.add_checkbox(label='+fix', tag='open_menu_fix', default_value=bool(config.get('open_menu_fix', False)), callback=self.callbacks.select_open_menu_fix)
-                            with dpg.tooltip(dpg.last_item()): dpg.add_text('tries to fix esc menu not opening', wrap= 190)
+                            with dpg.tooltip(dpg.last_item()): dpg.add_text('tries to fix esc menu not opening, works pretty good for both default and direct input mode', wrap=190)
                             dpg.add_checkbox(label='+fix2', tag='open_menu_fix2', default_value=bool(config.get('open_menu_fix2', False)), callback=self.callbacks.select_open_menu_fix2)
-                            with dpg.tooltip(dpg.last_item()): dpg.add_text('tries the fix but 2 times', wrap= 190)
+                            with dpg.tooltip(dpg.last_item()): dpg.add_text('tries the fix but 2 times', wrap=190)
                         dpg.add_spacer(height=0.5)
                         dpg.add_checkbox(label='hold to pause', tag='open_menu_hold', default_value=bool(config.get('open_menu_hold', False)), callback=self.callbacks.select_open_menu_hold)
                         with dpg.tooltip(dpg.last_item()): dpg.add_text('must enable in brawlhalla: OPTIONS > SYSTEM SETTINGS > HOLD TO PAUSE', wrap=190)
                         dpg.add_spacer(height=0.5)
                         dpg.add_checkbox(label='use ENTER key', tag='open_menu_enter', default_value=bool(config.get('open_menu_enter', True)))
-                        with dpg.tooltip(dpg.last_item()): dpg.add_text('use ENTER key instead of ESC', wrap= 190)
+                        with dpg.tooltip(dpg.last_item()): dpg.add_text('use ENTER key instead of ESC', wrap=190)
                         dpg.add_spacer(height=0.5)
-                        dpg.add_text('menu key presses', tag='menu_key_presses_text'); dpg.add_slider_int(label='times', min_value=1, max_value=6, default_value=int(config.get('menu_key_presses', 2)), tag='menu_key_presses')
-                        with dpg.tooltip(dpg.last_item()): dpg.add_text('times to press the menu key (background key actions dont register so its defaut to twice, set to 1 when using direct input)', wrap= 190)
-                        dpg.add_text('disconnect delay'); dpg.add_slider_int(label='ms', min_value=100, max_value=1000, default_value=int(config.get('disconnect_delay', 100)), tag='wait_disconnect')
-                        with dpg.tooltip(dpg.last_item()): dpg.add_text('time to wait for the menu to pop up after pressing menu key', wrap= 190)
-                        dpg.add_text('reconnect delay'); dpg.add_slider_int(label='seconds', min_value=3, max_value=20, default_value=int(config.get('reconnect_delay', 4)), tag='wait_reconnect')
-                        with dpg.tooltip(dpg.last_item()): dpg.add_text('time to wait before reconnectng to the match', wrap= 190)
+                        dpg.add_text('menu key presses', tag='menu_key_presses_text'); dpg.add_slider_int(label='times', min_value=1, max_value=4, default_value=int(config.get('menu_key_presses', 2)), tag='menu_key_presses')
+                        with dpg.tooltip(dpg.last_item(), tag='menu_key_presses_tooltip'): dpg.add_text('times to press the menu key (background key actions dont register so its default to 2)', wrap=190)
+                        dpg.add_text('disconnect delay'); dpg.add_slider_int(label='ms', min_value=100, max_value=1000, default_value=int(config.get('disconnect_delay', 120)), tag='wait_disconnect')
+                        with dpg.tooltip(dpg.last_item()): dpg.add_text('time to wait for the menu to pop up after pressing menu key', wrap=190)
+                        dpg.add_text('reconnect delay'); dpg.add_slider_int(label='seconds', min_value=3, max_value=10, default_value=int(config.get('reconnect_delay', 4)), tag='wait_reconnect')
+                        with dpg.tooltip(dpg.last_item()): dpg.add_text('time to wait before reconnectng to the match', wrap=190)
 
                     # input related
                     dpg.add_spacer(height=0.5)
                     with dpg.tree_node(label='input config'):
                         dpg.add_spacer(height=0.5)
                         dpg.add_checkbox(label='direct input mode', tag='direct_input', default_value=bool(config.get('direct_input', False)))
-                        with dpg.tooltip(dpg.last_item()): dpg.add_text('wont work in background! try this if you are having issues with inputs, and set "menu key presses" to 1', wrap= 190)
+                        with dpg.tooltip(dpg.last_item()): dpg.add_text('wont work in background! try this if you are having issues with inputs', wrap=190)
                         dpg.add_spacer(height=0.5)
                         with dpg.group(horizontal=True):
                             dpg.add_button(label='', width=26, height=26)
@@ -160,19 +160,18 @@ class PrawlGUI:
 
                             # storing values like this im too sleepy
                             dpg.add_text(default_value=config.get('key_up', 'up'), tag='key_up', show=False)
-                            dpg.add_text(default_value=config.get('key_left', 'left'), tag='key_down', show=False)
-                            dpg.add_text(default_value=config.get('key_down', 'down'), tag='key_left', show=False)
+                            dpg.add_text(default_value=config.get('key_left', 'left'), tag='key_left', show=False)
+                            dpg.add_text(default_value=config.get('key_down', 'down'), tag='key_down', show=False)
                             dpg.add_text(default_value=config.get('key_right', 'right'), tag='key_right', show=False)
                             dpg.add_text(default_value=config.get('key_throw', 'v'), tag='key_throw', show=False)
                             dpg.add_text(default_value=config.get('key_light', 'c'), tag='key_light', show=False)
                             dpg.add_text(default_value=config.get('key_heavy', 'x'), tag='key_heavy', show=False)
 
-
                         dpg.add_spacer(height=0.5)
                         dpg.add_text('hold'); dpg.add_slider_int(label='ms', min_value=0, max_value=300, default_value=int(config.get('keypress_hold', 70)), tag='keypress_hold')
-                        with dpg.tooltip(dpg.last_item()): dpg.add_text('average hold duration of the key', wrap= 190)
-                        dpg.add_text('delay'); dpg.add_slider_int(label='ms', min_value=0, max_value=500, default_value=int(config.get('keypress_delay', 150)), tag='keypress_delay')
-                        with dpg.tooltip(dpg.last_item()): dpg.add_text('time to wait before any new key is pressed in sequence', wrap= 190)
+                        with dpg.tooltip(dpg.last_item()): dpg.add_text('average hold duration of the key', wrap=190)
+                        dpg.add_text('delay'); dpg.add_slider_int(label='ms', min_value=50, max_value=500, default_value=int(config.get('keypress_delay', 150)), tag='keypress_delay')
+                        with dpg.tooltip(dpg.last_item()): dpg.add_text('time to wait before any new key is pressed in sequence', wrap=190)
                     dpg.add_spacer(height=0.5)
                     with dpg.group(horizontal=True, show=False):
                         dpg.add_button(label='W', callback=self.callbacks.reset_general)
@@ -186,7 +185,7 @@ class PrawlGUI:
                     dpg.add_spacer(height=0.5)
                     with dpg.group(horizontal=True):
                         dpg.add_checkbox(label='timer sound', tag='timer_sound', default_value=bool(config.get('timer_sound', False)))
-                        with dpg.tooltip(dpg.last_item()): dpg.add_text('plays a sound after the timer ends', wrap= 190)
+                        with dpg.tooltip(dpg.last_item()): dpg.add_text('plays a sound after the timer ends', wrap=190)
                         dpg.add_button(label='Ù', callback=self.callbacks.beep_sound)
                         dpg.bind_item_font(dpg.last_item(), self.icon_font)
                         with dpg.tooltip(dpg.last_item()): dpg.add_text('boop')
