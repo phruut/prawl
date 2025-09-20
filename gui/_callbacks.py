@@ -63,22 +63,21 @@ class Callbacks:
         else:
             self.state['hwnd'] = window.find()
             if self.state['hwnd']:
-                sequence = ['wait_restart', 'spam_menu', 'open_menu', 'disconnect', 'reconnect']
-                if dpg.get_value('open_menu_hold'):
-                    sequence = ['open_menu_hold' if item == 'open_menu' else item for item in sequence]
-                if dpg.get_value('open_menu_fix'):
-                    sequence = ['open_menu_fix' if item == 'open_menu' else item for item in sequence]
-                if dpg.get_value('open_menu_fix2'):
-                    sequence = [sub for item in sequence for sub in (['open_menu_fix', 'open_menu_fix'] if item == 'open_menu' else [item])]
-                self.timer.start(dpg.get_value('match_time'), sequence)
+                s_seq = ['wait_restart', 'spam_menu']
+                m_seq = ['open_menu', 'disconnect']
+                e_seq = ['reconnect']
+                if dpg.get_value('open_menu_hold'): m_seq = ['open_menu_hold', 'disconnect']
+                elif dpg.get_value('open_menu_fix'): m_seq = ['open_menu', 'disconnect'] * 2
+                elif dpg.get_value('open_menu_fix2'): m_seq = ['open_menu', 'disconnect'] * 3
+                self.timer.start(dpg.get_value('match_time'), s_seq+m_seq+e_seq)
                 if self.timer.running:
                     dpg.configure_item('run_button', label='ä')
                     dpg.configure_item('run_button_tooltip', default_value='stop')
-
             else:
                 dpg.configure_item('farm_status', label='brawlhalla window not found')
 
     def stop_button(self):
+        self.keyseq._release_all(self.state['hwnd'])
         self.timer.stop()
 
     def on_timer_stopped(self):
@@ -218,9 +217,11 @@ class Callbacks:
     # ---------------------------------------------------
 
     def select_open_menu_default(self):
-        if not dpg.get_value('open_menu_default'): dpg.set_value('open_menu_default', True)
-        else: dpg.configure_item('open_menu_fix', enabled=True); dpg.configure_item('open_menu_fix2', enabled=True)
-        for tag in ['menu_key_presses', 'menu_key_presses_text']:
+        if not dpg.get_value('open_menu_default'):
+            dpg.set_value('open_menu_default', True)
+        else:
+            dpg.configure_item('open_menu_fix', enabled=True); dpg.configure_item('open_menu_fix2', enabled=True)
+        for tag in ['menu_key_presses', 'menu_key_presses_text', 'menu_key_presses_tooltip']:
             dpg.configure_item(tag, show=True)
         dpg.set_value('open_menu_hold', False)
 
@@ -231,11 +232,11 @@ class Callbacks:
         if dpg.get_value('open_menu_fix'): dpg.set_value('open_menu_fix', False)
 
     def select_open_menu_hold(self):
-        if not dpg.get_value('open_menu_hold'): dpg.set_value('open_menu_hold', True)
+        if not dpg.get_value('open_menu_hold'): dpg.set_value('open_menu_hold', True) # this part make so you cant disable it lol
         dpg.configure_item('open_menu_fix', enabled=False); dpg.configure_item('open_menu_fix2', enabled=False)
-        for tag in ['menu_key_presses', 'menu_key_presses_text']:
-            dpg.configure_item(tag, show=False)
         dpg.set_value('open_menu_default', False); dpg.set_value('open_menu_fix', False)
+        for tag in ['menu_key_presses', 'menu_key_presses_text', 'menu_key_presses_tooltip']:
+            dpg.configure_item(tag, show=False)
 
     # ---------------------------------------------------
 

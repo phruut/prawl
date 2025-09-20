@@ -60,6 +60,8 @@ class Keyboard:
             # arrow keys
             'up': win32con.VK_UP, 'down': win32con.VK_DOWN,
             'left': win32con.VK_LEFT, 'right': win32con.VK_RIGHT,
+            # bro...
+            '[': 0xDB, ']': 0xDD, '/': 0xBF,
         }
         # add number keys 0-9
         for i in range(10):
