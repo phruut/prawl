@@ -1,5 +1,4 @@
 gold and exp farming timer script for **brawlhalla patch 9.12**\
-please see the [wiki](https://github.com/phruut/prawl/wiki) for more information about the script\
 help/dev discord server: https://discord.gg/2HDmuqqq9p  
 video tutorial (old version): https://youtu.be/SWuSntfHioQ
 
@@ -24,10 +23,12 @@ add this steam startup option
 - super light weight and minimal dependencies as its basically just a timer script
 - check for update button
 
+_please see the [wiki](https://github.com/phruut/prawl/wiki) for more information about the script_
+
 ### other
 - [ ] pixel search mode?
 - [ ] fix input bugs(?) laptop has issues idk why
-- [ ] memory read mode
+- [ ] memory read mode (ehhhh)
 - [ ] legends / user data (exp, gold, time spent, etc)
 - [ ] dynamic ui scaling (maaaybe)
 
