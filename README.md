@@ -10,7 +10,7 @@ add this steam startup option
 -noeac
 ```
 > [!caution]
-> please **always** use `-noeac` option before using the script to avoid the risk of any bans, although it is highly unlikely\
+> please **always** use `-noeac` launch option to avoid the risk of any bans, although it is highly unlikely\
 > _i am not responsible for anything that happens to your account_
 
 ## 🔥features
