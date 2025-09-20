@@ -61,4 +61,5 @@ nuitka --onefile --windows-console-mode=disable --windows-icon-from-ico=res\praw
 - [cq-pixel font](https://github.com/cpuQ) -  main ui font
 - [Dear PyGui](https://github.com/hoffstadt/DearPyGui) - gui library
 - [pywin32](https://github.com/mhammond/pywin32) - win32 api things
+- [py-window-styles](https://github.com/Akascape/py-window-styles) - window stuff
 - [Nuitka](https://github.com/Nuitka/Nuitka) - compiler
