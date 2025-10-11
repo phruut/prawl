@@ -1,4 +1,4 @@
-gold and exp farming timer script for **brawlhalla patch 9.12**\
+gold and exp farming timer script for **brawlhalla patch 9.13**\
 help/dev discord server: https://discord.gg/2HDmuqqq9p  
 video tutorial (old version): https://youtu.be/SWuSntfHioQ
 
@@ -31,6 +31,7 @@ _please see the [wiki](https://github.com/phruut/prawl/wiki) for more informatio
 - [ ] memory read mode (ehhhh)
 - [ ] legends / user data (exp, gold, time spent, etc)
 - [ ] dynamic ui scaling (maaaybe)
+- [ ] headless mode?
 
 ## 🔎download
 you can find the (old) compiled farm.py in the [releases page](https://github.com/phruut/prawl/releases), or [click here to download](https://github.com/phruut/prawl/releases/download/241209/farm_1209.exe)
