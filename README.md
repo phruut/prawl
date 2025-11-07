@@ -1,4 +1,4 @@
-gold and exp farming timer script for **brawlhalla patch 9.13**\
+gold and exp farming timer script for **brawlhalla patch 10.00**\
 help/dev discord server: https://discord.gg/2HDmuqqq9p  
 video tutorial (old version): https://youtu.be/SWuSntfHioQ
 
