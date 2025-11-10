@@ -53,11 +53,6 @@ and then you can run it
 python main.py
 ```
 
-## compiled with nuitka
-```bash
-nuitka --onefile --windows-console-mode=disable --windows-icon-from-ico=res\praw-app.ico main.py
-```
-
 ## 🔗links
 - [Piconic font](https://www.pentacom.jp/pentacom/bitfontmaker2/gallery/?id=9261) - icons font
 - [cq-pixel font](https://github.com/cpuQ) -  main ui font
