@@ -21,6 +21,13 @@ class Timer:
         self.pressing = False
         self._timer_thread = None
 
+    def _update_gui(self, item_tag, **kwargs):
+        def update_callback():
+            if dpg.does_item_exist(item_tag):
+                dpg.configure_item(item_tag, **kwargs)
+        with dpg.mutex():
+            dpg.set_frame_callback(dpg.get_frame_count() + 1, callback=update_callback)
+
     def set_on_stop_callback(self, callback):
         self.on_stop_callback = callback
 
@@ -66,7 +73,7 @@ class Timer:
                         time.sleep(1)
                     continue
                 mins, secs = divmod(self.remaining_time, 60)
-                dpg.configure_item('farm_status', label=f'active ({mins}:{secs:02})')
+                self._update_gui('farm_status', label=f'active ({mins}:{secs:02})')
                 time.sleep(1)
                 self.remaining_time -= 1
 
@@ -80,29 +87,28 @@ class Timer:
                 self.state['total_gold'] += gold_gain
                 self.state['total_exp'] += exp_gain
                 self.state['current_exp'] += exp_gain
-                dpg.configure_item('total_games', label=int(self.state['total_games']))
-                dpg.configure_item('total_gold', label=int(self.state['total_gold']))
-                dpg.configure_item('total_exp', label=int(self.state['total_exp']))
+                self._update_gui('total_games', label=int(self.state['total_games']))
+                self._update_gui('total_gold', label=int(self.state['total_gold']))
+                self._update_gui('total_exp', label=int(self.state['total_exp']))
 
                 # rate limit
                 if dpg.get_value('rate_limit_detect') and self.state['current_exp'] >= 13000:
-                    dpg.configure_item('farm_status', label='exp rate limit...')
+                    self._update_gui('farm_status', label='exp rate limit...')
                     if dpg.get_value('rate_limit_wait'):
                         self.remaining_time = self.waiting_time
                         while self.remaining_time > 0 and self.running:
                             mins, secs = divmod(self.remaining_time, 60)
-                            dpg.configure_item('farm_status', label=f'exp rate limit reset in {mins}:{secs:02}')
+                            self._update_gui('farm_status', label=f'exp rate limit reset in {mins}:{secs:02}')
                             time.sleep(1)
                             self.remaining_time -= 1
                         self.state['current_exp'] = 0
                     else:
                         self.stop()
                         return
-
                 self.remaining_time = self.initial_time
 
                 # max games
                 if dpg.get_value('max_games') and self.state['total_games'] >= dpg.get_value('max_games_amount'):
-                    dpg.configure_item('farm_status', label='max games reached...')
+                    self._update_gui('farm_status', label='max games reached...')
                     self.stop()
                     return

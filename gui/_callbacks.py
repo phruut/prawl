@@ -4,9 +4,9 @@ import winsound
 import webbrowser
 import threading
 import dearpygui.dearpygui as dpg
-import scripts.window as window
-from scripts.timer import calculate_exp, calculate_gold
-from scripts.input import KeyListener
+import core.window as window
+from core.timer import calculate_exp, calculate_gold
+from core.input import KeyListener
 
 class CooldownTimer:
     def __init__(self, duration, callback):

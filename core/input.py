@@ -3,8 +3,8 @@ import random
 import win32api
 import win32con
 import dearpygui.dearpygui as dpg
-from scripts.window import activate
-from scripts._direct import Keyboard
+from core.window import activate
+from core._direct import Keyboard
 
 class KeyListener:
     def __init__(self):
