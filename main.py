@@ -1,10 +1,10 @@
 import dearpygui.dearpygui as dpg
 import pywinstyles
-import scripts.window as window
-from scripts.config import Config, get_platform
-from scripts.input import KeySequence
-from scripts.timer import Timer
-from scripts.update import Update
+import core.window as window
+from core.config import Config, get_platform
+from core.input import KeySequence
+from core.timer import Timer
+from core.update import Update
 from gui.gui import PrawlGUI
 
 # stop timer, release all keys, save config, show window if hidden
@@ -33,7 +33,7 @@ if __name__ == '__main__' and get_platform():
     # setup gui things
     gui = PrawlGUI(config, timer, keyseq, state, update)
     dpg.create_viewport(
-        title=f'prawl',
+        title='prawl',
         min_width=291,
         min_height=169,
         width=291,
@@ -52,7 +52,7 @@ if __name__ == '__main__' and get_platform():
     pywinstyles.change_title_color(None, '#c0c3c7')
 
     if config.data['auto_launch']:
-        gui._launch_callback()
+        gui.callbacks.launch_button()
 
     dpg.start_dearpygui()
     dpg.destroy_context()
