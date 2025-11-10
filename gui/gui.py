@@ -21,7 +21,7 @@ class PrawlGUI:
 
     def _hyperlink(self, text, address):
         with dpg.group(horizontal=True):
-            dpg.add_text(f'(', color=(100, 149, 238))
+            dpg.add_text('(', color=(100, 149, 238))
             dpg.bind_item_font(dpg.last_item(), self.icon_font)
             dpg.add_button(label=text, callback=lambda: webbrowser.open(address))
             dpg.bind_item_theme(dpg.last_item(), "__hyperlinkTheme")
@@ -37,7 +37,7 @@ class PrawlGUI:
                     with dpg.group():
                         with dpg.group():
                             dpg.add_slider_int(min_value=1, max_value=25, default_value=int(self.config.get('match_time', 25)), width=168, height=20, tag='match_time', callback=self.callbacks.match_time_slider)
-                            with dpg.tooltip(dpg.last_item()): dpg.add_text('', tag='estimated_values');self.callbacks.update_values(None, self.config.get('match_time', 25))
+                            with dpg.tooltip(dpg.last_item()): dpg.add_text('', tag='estimated_values'); self.callbacks.update_values(None, self.config.get('match_time', 25))
                             dpg.add_spacer(height=0.5)
                             self.callbacks.update_slider_format(int(self.config.get('match_time', 25)))
 
