@@ -3,5 +3,5 @@
   "host_pattern": ["ec2-.+\\.compute\\.amazonaws\\.com"],
   "executable": "Brawlhalla.exe",
   "window_title": "Brawlhalla",
-  "exp_multiplier": 2
+  "multiplier": 1
 }
