@@ -1,4 +1,5 @@
 dearpygui
+psutil
 pywin32
 requests
 pywinstyles
