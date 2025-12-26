@@ -1,18 +1,16 @@
 import requests
 import json
 
-REPO_OWNER = 'phruut'
-REPO_NAME = 'prawl'
-API_URL = f'https://api.github.com/repos/{REPO_OWNER}/{REPO_NAME}/releases/latest'
-
 class Update:
-    def __init__(self, version):
-        self.api_url = API_URL
-        self.current_version = version
+    def __init__(self, config):
+        self.config = config
+        self.api_url = f'https://api.github.com/repos/{self.config.network.repo_owner}/{self.config.network.repo_name}/releases/latest'
+        self.current_version = config.version
         self.latest_version = None
         self.release_url = None
 
     def _version_parse(self, version):
+        # i forgot where i got this off from
         return tuple(map(int, version.split('.')))
 
     def check(self):
@@ -31,6 +29,8 @@ class Update:
                 return f'update available: {self.latest_version}', True
             elif self._version_parse(self.latest_version) == self._version_parse(self.current_version):
                 return f'up to date! ({self.current_version})', False
+            else:
+                return f'mystery version :o ({self.current_version})', False
 
         except requests.exceptions.RequestException:
             return 'could not connect to server', False

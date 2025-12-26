@@ -182,4 +182,5 @@ main.exe
 .refs
 .trash
 .venv
-config.ini
+logs
+data
