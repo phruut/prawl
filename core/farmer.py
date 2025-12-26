@@ -33,8 +33,8 @@ class Farmer:
     def start(self, minutes, sequence):
         if self.running:
             return
-
         logger.info(f'starting sequence: {sequence}')
+
         # check if keybinds set
         required_keys = ['key_up', 'key_left', 'key_down', 'key_right', 'key_light', 'key_heavy', 'key_throw']
         for key in required_keys:
