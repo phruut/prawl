@@ -82,7 +82,7 @@ class SettingsView(BaseView):
                     callback=self.callbacks.toggle_online_mode
                 )
                 with dpg.tooltip(ts.id):
-                    dpg.add_text('turn this on if youre using it in ffa or something! this ignores match time completely', wrap=190)
+                    dpg.add_text('turn this on if youre using it in ffa or something!', wrap=190)
 
                 with dpg.group(tag='online_mode_group', show=bool(self.config.settings.get('network', 'online_mode'))):
 
