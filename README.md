@@ -30,7 +30,7 @@ _please see the [wiki](https://github.com/phruut/prawl/wiki) for more informatio
 main
 - [ ] python installation video asdkjhgakshgasgs
 - [ ] finish adding logging
-- [ ] add network mode updater in update
+- [ ] check for updates on server host info directly from this repository
 
 qol?
 - [ ] starting mid match?
