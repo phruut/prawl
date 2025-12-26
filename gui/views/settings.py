@@ -45,7 +45,7 @@ class SettingsView(BaseView):
             with dpg.tooltip(ts.id):
                 dpg.add_text('use network detection instead of timers for match state', wrap=190)
 
-            with dpg.group(tag='network_settings_group', show=bool(self.config.settings.get('network', 'network_mode'))):
+            with dpg.group(tag='network_mode_group', show=bool(self.config.settings.get('network', 'network_mode'))):
 
                 # early disconnect threshold
                 dpg.add_spacer()
@@ -57,7 +57,7 @@ class SettingsView(BaseView):
                     callback=self.callbacks.update_threshold_tooltip,
                     user_data=('early disconnect threshold: ',' %%',' %%')
                 )
-                with dpg.tooltip(dpg.last_item(), tag='early_dc_thresh_tooltip'):
+                with dpg.tooltip(dpg.last_item()):
                     dpg.add_text('', tag='early_dc_thresh_tooltip_text', wrap=190)
                     self.callbacks.update_threshold_tooltip()
 
@@ -70,13 +70,38 @@ class SettingsView(BaseView):
                     default_value=int(self.config.settings.get('network', 'retry_amount')),
                     user_data=('retry: ',' time')
                 )
-                with dpg.tooltip(dpg.last_item(), tag='retry_amount_tooltip'):
+                with dpg.tooltip(dpg.last_item()):
                     dpg.add_text('amount to retry the disconnect / reconnect sequence before stopping', wrap=190)
+
+                # online mode toggle
+                dpg.add_spacer()
+                ts = self.add_toggle(
+                    tag='online_mode',
+                    label='online mode',
+                    default_value=bool(self.config.settings.get('network', 'online_mode')),
+                    callback=self.callbacks.toggle_online_mode
+                )
+                with dpg.tooltip(ts.id):
+                    dpg.add_text('turn this on if youre using it in ffa or something!', wrap=190)
+
+                with dpg.group(tag='online_mode_group', show=bool(self.config.settings.get('network', 'online_mode'))):
+
+                    # queue wait time
+                    dpg.add_spacer()
+                    self.add_slider_text(
+                        tag='queue_delay',
+                        width=260, height=20,
+                        min_value=0, max_value=300,
+                        default_value=int(self.config.settings.get('network', 'queue_delay')),
+                        user_data=('max queue time: ',' second')
+                    )
+                    with dpg.tooltip(dpg.last_item()):
+                        dpg.add_text('max time the script waits in queue for until it stops', wrap=190)
 
             dpg.add_spacer()
             self.add_separator()
-            dpg.add_spacer()
 
+            dpg.add_spacer()
             dpg.add_button(label='starting / restarting', width=260)
             dpg.bind_item_theme(dpg.last_item(), '__centerTitleTheme')
 
@@ -119,8 +144,8 @@ class SettingsView(BaseView):
             # dc rc options
             dpg.add_spacer()
             self.add_separator()
-            dpg.add_spacer()
 
+            dpg.add_spacer()
             dpg.add_button(label='disconnect / reconnect', width=260)
             dpg.bind_item_theme(dpg.last_item(), '__centerTitleTheme')
 
@@ -130,7 +155,6 @@ class SettingsView(BaseView):
                 tag='open_menu_hold',
                 label='hold to pause',
                 default_value=bool(self.config.settings.get('timings', 'open_menu_hold')),
-                callback=self.callbacks.select_open_menu_hold
             )
             with dpg.tooltip(ts.id):
                 dpg.add_text('only works with direct input mode! must enable in brawlhalla: OPTIONS > SYSTEM SETTINGS > HOLD TO PAUSE', wrap=190)
@@ -311,6 +335,7 @@ class SettingsView(BaseView):
 
             dpg.add_spacer()
             self.add_separator()
+
             dpg.add_spacer()
             self.add_slider_text(
                 tag='beep_frequency',
@@ -366,6 +391,7 @@ class SettingsView(BaseView):
             # rate limits
             dpg.add_spacer()
             self.add_separator()
+
             dpg.add_spacer()
             ts = self.add_toggle(
                 tag='rate_limit_detect',
@@ -426,6 +452,7 @@ class SettingsView(BaseView):
             # idk
             dpg.add_spacer()
             self.add_separator()
+
             dpg.add_spacer()
             with dpg.collapsing_header(label='lobby setup (experimental)', bullet=True):
                 dpg.add_spacer()

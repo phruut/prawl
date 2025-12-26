@@ -14,6 +14,7 @@ def get_definitions(interface):
     W_RESTART = interface.get('game_restart_delay')
     W_DC_DELAY = interface.get('disconnect_delay')
     W_RC_DELAY = interface.get('reconnect_delay')
+    W_QU_DELAY = interface.get('queue_delay')
 
     C_START_SPAM = interface.get('game_start_spam')
     C_RETRY_AMOUNT = interface.get('retry_amount')
@@ -41,7 +42,6 @@ def get_definitions(interface):
             'spam_menu': [
                 ('status', 'spamming through menu!'),
                 ('press', K_LIGHT, {'count': C_START_SPAM}),
-                ('countdown', W_GAMELOAD, 'waiting for game {}...')
             ],
             'spam_menu_net': [
                 ('status', 'spamming, waiting for connection...'),
@@ -51,17 +51,17 @@ def get_definitions(interface):
                 ('countdown', W_GAMELOAD, 'stabilizing connection {}s...')
             ],
 
-            # wait for match load... but i just combined it back into spam menu lolxd
-            # 'wait_match': [
-            #     ('countdown', W_GAMELOAD, 'waiting for game {}...')
-            # ],
-            # 'wait_match_net': [
-            #     ('status', 'waiting for connection...'),
-            #     ('retry_net', {'mode': 'connect', 'attempts': W_NET_TIMEOUT}, [
-            #         ('wait', 1000)
-            #     ]),
-            #     ('countdown', W_CN_STABILIZE, 'stabilizing connection {}s...')
-            # ],
+            # wait for match load (only used in online mode now )
+            'wait_match': [
+                ('countdown', W_GAMELOAD, 'waiting for game {}...')
+            ],
+            'wait_match_net': [
+                ('status', 'waiting for connection...'),
+                ('retry_net', {'mode': 'connect', 'attempts': W_QU_DELAY}, [
+                    ('wait', 1000),
+                ]),
+                ('countdown', W_GAMELOAD, 'stabilizing connection {}s...')
+            ],
 
             # open esc menu, disconnect
             'disconnect': [

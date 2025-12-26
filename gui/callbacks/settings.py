@@ -30,10 +30,13 @@ class SettingsCallbacks:
 
     # loop tab
     # ----------------------------------------------
+    # online mode toggle
+    def toggle_online_mode(self, sender, app_data, user_data):
+        self.interface.configure('online_mode_group', show=app_data)
 
     # network mode toggle
     def toggle_network_mode(self, sender, app_data, user_data):
-        self.interface.configure('network_settings_group', show=app_data)
+        self.interface.configure('network_mode_group', show=app_data)
         self.update_threshold_tooltip()
 
     # threshold calculate
@@ -44,13 +47,6 @@ class SettingsCallbacks:
         minutes = int(threshold_minutes)
         seconds = int((threshold_minutes % 1) * 60)
         self.interface.set('early_dc_thresh_tooltip_text', f'if the match disconnects before {minutes}:{seconds:02}, assume it to be a network error and farming will stop')
-
-    # open menu hold toggle
-    def select_open_menu_hold(self, sender, app_data, user_data):
-        if self.interface.get('open_menu_hold'):
-            self.interface.set('open_menu_default', False)
-        else:
-            self.interface.set('open_menu_default', True)
 
     # input tab
     # ----------------------------------------------

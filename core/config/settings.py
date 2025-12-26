@@ -16,6 +16,8 @@ class SettingsConfig(Base):
             'network_mode': False,
             'retry_amount': 5,
             'early_dc_thresh': 90,
+            'online_mode': False,
+            'queue_delay': 300
             #'timeout_wait': 60,
             #'connection_stabilize': 10,
             #'disconnect_stabilize': 5,
