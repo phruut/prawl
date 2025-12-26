@@ -1,10 +1,10 @@
-gold and exp farming timer script for **brawlhalla patch 10.00**\
+gold and exp farming timer script for **brawlhalla patch 10.01**\
 help/dev discord server: https://discord.gg/2HDmuqqq9p  
 video tutorial (old version): https://youtu.be/SWuSntfHioQ
 
 <img width="277" height="162" alt="prawl-0 1 2" src="https://github.com/user-attachments/assets/54e57536-92c7-47cb-8fcb-43ab7b868dcd" />
 
-## 💡important
+## 💡 important
 add this steam startup option
 ```
 -noeac
@@ -13,7 +13,7 @@ add this steam startup option
 > please **always** use `-noeac` launch option to avoid the risk of any bans, although it is highly unlikely\
 > _i am not responsible for anything that happens to your account_
 
-## 🔥features
+## 🔥 features
 - launch brawlhalla from gui (+auto launch on script start option)
 - set custom values and adjust timings
 - auto start matches, also configurable
@@ -25,35 +25,43 @@ add this steam startup option
 
 _please see the [wiki](https://github.com/phruut/prawl/wiki) for more information about the script_
 
-### other
-- [ ] pixel search mode?
-- [ ] fix input bugs(?) laptop has issues idk why
-- [ ] memory read mode (ehhhh)
+## 😭 todo
+
+main
+- [ ] python installation video asdkjhgakshgasgs
+- [ ] finish adding logging
+- [ ] add network mode updater in update
+
+qol?
+- [ ] starting mid match?
+- [ ] in disconnect net, if it fails the first time, reduce the timer by the amount of time waited.
 - [ ] legends / user data (exp, gold, time spent, etc)
-- [ ] dynamic ui scaling (maaaybe)
 - [ ] headless mode?
 
-## 🔎download
+soon
+- [ ] update slider text based on set_value commands too
+- [ ] automatic colors based on windows theme accent color
+- [ ] setting profiles
+- [ ] customizable themes page, basically have 3-4 main colors, and adjust or give variations to them
+
+
+## 🔎 download
 you can find the (old) compiled farm.py in the [releases page](https://github.com/phruut/prawl/releases), or [click here to download](https://github.com/phruut/prawl/releases/download/241209/farm_1209.exe)
 > [!warning]
 > your anti-virus may flag this executable as a threat, as it interacts with Win32 API for sending key inputs and cmd for launching brawlhalla
 
-## 🚀manual install
+## 🚀 manual install
 ```bash
+# clone repo and install dependencies
 git clone https://github.com/phruut/prawl
-```
-```bash
 cd prawl
-```
-```Pip Requirements
 python -m pip install -r requirements.txt
-```
-and then you can run it
-```bash
+
+# and then you can run it
 python main.py
 ```
 
-## 🔗links
+## 🔗 links
 - [Piconic font](https://www.pentacom.jp/pentacom/bitfontmaker2/gallery/?id=9261) - icons font
 - [cq-pixel font](https://github.com/cpuQ) -  main ui font
 - [Dear PyGui](https://github.com/hoffstadt/DearPyGui) - gui library
