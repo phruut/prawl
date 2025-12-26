@@ -17,34 +17,31 @@ class MainCallbacks:
     # ----------------------------------------------
 
     def _get_sequence(self, mode):
-        seq = []
+        is_net = self.interface.get('network_mode')
+        is_online = self.interface.get('online_mode')
+        is_hold = self.interface.get('open_menu_hold')
 
-        # base sequence
+        suffix_net = '_net' if is_net else ''
+        suffix_hold = '_hold' if is_hold else ''
+
+        dc_cmd = f'disconnect{suffix_net}{suffix_hold}'
+        rc_cmd = f'reconnect{suffix_net}'
+
+        if mode == 'oops':
+            return [dc_cmd, rc_cmd]
+
         if mode == 'start':
-            seq = ['wait_restart', 'spam_menu',]
-            if self.interface.get('open_menu_hold'):
-                m_seq = ['disconnect_hold']
+            if is_net:
+                if is_online:
+                    middle_seq = ['spam_menu', 'wait_match_net']
+                else:
+                    middle_seq = ['spam_menu_net']
             else:
-                m_seq = ['disconnect']
+                middle_seq = ['spam_menu', 'wait_match']
 
-            seq.extend(m_seq)
-            seq.append('reconnect')
+            return ['wait_restart'] + middle_seq + [dc_cmd, rc_cmd]
 
-        elif mode == 'oops':
-            dc_cmd = 'disconnect_hold' if self.interface.get('open_menu_hold') else 'disconnect'
-            seq = [dc_cmd, 'reconnect']
-
-        # network mode
-        if self.interface.get('network_mode'):
-            net_map = {
-                'spam_menu': 'spam_menu_net',
-                'disconnect': 'disconnect_net',
-                'disconnect_hold': 'disconnect_net_hold',
-                'reconnect':  'reconnect_net'
-            }
-            seq = [net_map.get(item, item) for item in seq]
-
-        return seq
+        return []
 
     # match time slider update
     # ----------------------------------------------
