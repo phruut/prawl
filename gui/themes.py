@@ -17,18 +17,18 @@ def create_themes(config):
         with dpg.theme_component(dpg.mvAll):
 
             # window
-            dpg.add_theme_style(dpg.mvStyleVar_WindowBorderSize, 0)
-            dpg.add_theme_style(dpg.mvStyleVar_FrameBorderSize, 0)
-            dpg.add_theme_style(dpg.mvStyleVar_WindowPadding, 8,8)
-            dpg.add_theme_style(dpg.mvStyleVar_WindowRounding, 4)
+            dpg.add_theme_style(dpg.mvStyleVar_WindowBorderSize, 0.0)
+            dpg.add_theme_style(dpg.mvStyleVar_FrameBorderSize, 0.0)
+            dpg.add_theme_style(dpg.mvStyleVar_WindowPadding, 8.0,8.0)
+            dpg.add_theme_style(dpg.mvStyleVar_WindowRounding, 4.0)
             dpg.add_theme_color(dpg.mvThemeCol_WindowBg, c('bg_primary'))
             dpg.add_theme_color(dpg.mvThemeCol_Border, c('bg_primary'))
             dpg.add_theme_color(dpg.mvThemeCol_Text, c('text_primary'))
             dpg.add_theme_color(dpg.mvThemeCol_TextDisabled, c('text_primary_disabled'))
 
             # components
-            dpg.add_theme_style(dpg.mvStyleVar_FramePadding, 2,2)
-            dpg.add_theme_style(dpg.mvStyleVar_FrameRounding, 4)
+            dpg.add_theme_style(dpg.mvStyleVar_FramePadding, 2.0,2.0)
+            dpg.add_theme_style(dpg.mvStyleVar_FrameRounding, 4.0)
             dpg.add_theme_color(dpg.mvThemeCol_FrameBg, c('bg_secondary'))
             dpg.add_theme_color(dpg.mvThemeCol_FrameBgHovered, c('hover'))
             dpg.add_theme_color(dpg.mvThemeCol_FrameBgActive, c('active'))
@@ -42,8 +42,8 @@ def create_themes(config):
             dpg.add_theme_color(dpg.mvThemeCol_ButtonActive, c('active'))
 
             # sliders
-            dpg.add_theme_style(dpg.mvStyleVar_GrabRounding, 3)
-            dpg.add_theme_style(dpg.mvStyleVar_GrabMinSize, 15)
+            dpg.add_theme_style(dpg.mvStyleVar_GrabRounding, 3.0)
+            dpg.add_theme_style(dpg.mvStyleVar_GrabMinSize, 15.0)
             dpg.add_theme_color(dpg.mvThemeCol_SliderGrab, c('active'))
             dpg.add_theme_color(dpg.mvThemeCol_SliderGrabActive, c('bg_secondary'))
 
@@ -51,13 +51,13 @@ def create_themes(config):
             dpg.add_theme_color(dpg.mvThemeCol_CheckMark, c('active'))
 
             # child window
-            dpg.add_theme_style(dpg.mvStyleVar_ChildBorderSize, 8)
-            dpg.add_theme_style(dpg.mvStyleVar_ChildRounding, 4,4)
+            dpg.add_theme_style(dpg.mvStyleVar_ChildBorderSize, 8.0)
+            dpg.add_theme_style(dpg.mvStyleVar_ChildRounding, 4.0)
             dpg.add_theme_color(dpg.mvThemeCol_ChildBg, c('bg_primary'))
 
             # scrollbar
-            dpg.add_theme_style(dpg.mvStyleVar_ScrollbarRounding, 4)
-            dpg.add_theme_style(dpg.mvStyleVar_ScrollbarSize, 8)
+            dpg.add_theme_style(dpg.mvStyleVar_ScrollbarRounding, 4.0)
+            dpg.add_theme_style(dpg.mvStyleVar_ScrollbarSize, 8.0)
             dpg.add_theme_color(dpg.mvThemeCol_ScrollbarBg, c('transparent'))
             dpg.add_theme_color(dpg.mvThemeCol_ScrollbarGrab, c('bg_primary'))
             dpg.add_theme_color(dpg.mvThemeCol_ScrollbarGrabHovered, c('hover_extra'))
@@ -65,9 +65,9 @@ def create_themes(config):
 
         # tooltip
         with dpg.theme_component(dpg.mvTooltip):
-            dpg.add_theme_style(dpg.mvStyleVar_WindowPadding, 8,6)
-            dpg.add_theme_style(dpg.mvStyleVar_PopupBorderSize, 0)
-            dpg.add_theme_style(dpg.mvStyleVar_PopupRounding, 4)
+            dpg.add_theme_style(dpg.mvStyleVar_WindowPadding, 8.0,6.0)
+            dpg.add_theme_style(dpg.mvStyleVar_PopupBorderSize, 0.0)
+            dpg.add_theme_style(dpg.mvStyleVar_PopupRounding, 4.0)
             dpg.add_theme_color(dpg.mvThemeCol_PopupBg, c('bg_quaternary'))
 
     # center text themes
@@ -124,9 +124,9 @@ def create_themes(config):
 
     with dpg.theme(tag='__layoutTableTheme'):
         with dpg.theme_component(dpg.mvTable):
-            dpg.add_theme_style(dpg.mvStyleVar_CellPadding, 4, 0)
-            dpg.add_theme_style(dpg.mvStyleVar_FramePadding, 0, 0)
-            dpg.add_theme_style(dpg.mvStyleVar_ItemSpacing, 0, 0)
+            dpg.add_theme_style(dpg.mvStyleVar_CellPadding, 4.0, 0.0)
+            dpg.add_theme_style(dpg.mvStyleVar_FramePadding, 0.0, 0.0)
+            dpg.add_theme_style(dpg.mvStyleVar_ItemSpacing, 0.0, 0.0)
 
     with dpg.theme(tag='__activeButtonTheme'):
         with dpg.theme_component(dpg.mvButton):
@@ -137,15 +137,15 @@ def create_themes(config):
 
     with dpg.theme(tag='__groupBackgroundTheme1'):
         with dpg.theme_component(dpg.mvChildWindow):
-            dpg.add_theme_style(dpg.mvStyleVar_WindowPadding, 2, 2)
-            dpg.add_theme_style(dpg.mvStyleVar_FramePadding, 2,0)
-            dpg.add_theme_style(dpg.mvStyleVar_ChildBorderSize, 0)
+            dpg.add_theme_style(dpg.mvStyleVar_WindowPadding, 2.0, 2.0)
+            dpg.add_theme_style(dpg.mvStyleVar_FramePadding, 2.0,0.0)
+            dpg.add_theme_style(dpg.mvStyleVar_ChildBorderSize, 0.0)
             dpg.add_theme_color(dpg.mvThemeCol_ChildBg, c('bg_secondary'))
         with dpg.theme_component(dpg.mvTooltip):
-            dpg.add_theme_style(dpg.mvStyleVar_WindowPadding, 8,4)
+            dpg.add_theme_style(dpg.mvStyleVar_WindowPadding, 8.0,4.0)
 
     with dpg.theme(tag='__groupBackgroundTheme2'):
         with dpg.theme_component(dpg.mvChildWindow):
-            dpg.add_theme_style(dpg.mvStyleVar_ChildBorderSize, 0)
-            dpg.add_theme_style(dpg.mvStyleVar_WindowPadding, 8, 8)
+            dpg.add_theme_style(dpg.mvStyleVar_ChildBorderSize, 0.0)
+            dpg.add_theme_style(dpg.mvStyleVar_WindowPadding, 8.0, 8.0)
             dpg.add_theme_color(dpg.mvThemeCol_ChildBg, c('bg_tertiary'))

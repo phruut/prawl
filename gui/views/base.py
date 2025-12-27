@@ -1,6 +1,6 @@
 import dearpygui.dearpygui as dpg
 import webbrowser
-from gui.widgets import ToggleSwitch, TextSlider, Separator
+from ..widgets import ToggleSwitch, TextSlider, Separator
 
 class BaseView:
     def __init__(self, config, interface, callbacks, fonts):

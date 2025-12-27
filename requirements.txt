@@ -1,5 +1,5 @@
-dearpygui
-psutil
-pywin32
-requests
-pywinstyles
+dearpygui==2.0.0
+psuti==7.2.0
+pywin32==311
+pywinstyles==1.8
+requests==2.32.5

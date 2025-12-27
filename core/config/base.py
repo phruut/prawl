@@ -38,6 +38,13 @@ def logs_dir():
     path.mkdir(parents=True, exist_ok=True)
     return path
 
+# resources
+def res_dir() -> Path:
+    path = Path(script_dir()) / 'res'
+    if not path.exists():
+        raise FileNotFoundError(f'missing resource directory: {path}')
+    return path
+
 class Base:
     def __init__(self, filepath, defaults):
         self.filepath = Path(filepath)

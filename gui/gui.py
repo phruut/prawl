@@ -1,7 +1,7 @@
 import dearpygui.dearpygui as dpg
-from gui.themes import create_themes, create_fonts
-from gui.callbacks import Callbacks
-from gui.views import MainView, SettingsView, HelpView
+from .themes import create_themes, create_fonts
+from .callbacks import Callbacks
+from .views import MainView, SettingsView, HelpView
 
 class MainGUI:
     def __init__(self, config, process, interface, keyseq, farmer, update):

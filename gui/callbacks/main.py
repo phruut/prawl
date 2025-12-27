@@ -143,7 +143,7 @@ class MainCallbacks:
                 self.launch_timer.cancel()
                 self.farmer.stop()
         else:
-            subprocess.run('cmd /c start steam://rungameid/291550', check=False)
+            subprocess.run('cmd /c start steam://rungameid/291550', check=False, creationflags=0x08000000) # this hides the cmd window i think
             self.interface.update_status('starting brawlhalla...')
             self.interface.configure('launch_button_tooltip', default_value='stop brawlhalla')
             while not self.process.running():
