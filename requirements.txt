@@ -1,4 +1,7 @@
-dearpygui==2.0.0
+# for compiling with pyinstaller, use 2.0.0 but...
+# this freezes gui on windows when its resized
+# but 1.10.1 doesnt do this, idk its weird hehe
+dearpygui==2.1.1
 psuti==7.2.0
 pywin32==311
 pywinstyles==1.8
