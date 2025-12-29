@@ -55,6 +55,8 @@ you can find the (old) compiled farm.py in the [releases page](https://github.co
 # clone repo and install dependencies
 git clone https://github.com/phruut/prawl
 cd prawl
+python -m venv .venv
+.venv\Scripts\activate
 python -m pip install -r requirements.txt
 
 # and then you can run it
