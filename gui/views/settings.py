@@ -66,7 +66,7 @@ class SettingsView(BaseView):
                 self.add_slider_text(
                     tag='retry_amount',
                     width=260, height=20,
-                    min_value=2, max_value=10,
+                    min_value=1, max_value=10,
                     default_value=int(self.config.settings.get('network', 'retry_amount')),
                     user_data=('retry: ',' time')
                 )
@@ -176,7 +176,7 @@ class SettingsView(BaseView):
             self.add_slider_text(
                 tag='reconnect_delay',
                 width=260, height=20,
-                min_value=3, max_value=25,
+                min_value=0, max_value=25,
                 default_value=int(self.config.settings.get('timings', 'reconnect_delay')),
                 user_data=('reconnect delay: ',' second'))
             with dpg.tooltip(dpg.last_item()):
