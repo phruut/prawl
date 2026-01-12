@@ -1,4 +1,5 @@
-gold and exp farming timer script for **brawlhalla patch 10.01**\
+gold and xp farming bot, afk farmer, macro, bot, any legend, all legends, windows\
+tested and working for **brawlhalla patch 10.01**\
 help/dev discord server: https://discord.gg/2HDmuqqq9p  
 video tutorial (old version): https://youtu.be/SWuSntfHioQ
 
