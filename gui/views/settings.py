@@ -66,12 +66,24 @@ class SettingsView(BaseView):
                 self.add_slider_text(
                     tag='retry_amount',
                     width=260, height=20,
-                    min_value=1, max_value=10,
+                    min_value=0, max_value=10,
                     default_value=int(self.config.settings.get('network', 'retry_amount')),
-                    user_data=('retry: ',' time')
+                    user_data=('retry amount: ',' time')
                 )
                 with dpg.tooltip(dpg.last_item()):
                     dpg.add_text('amount to retry the disconnect / reconnect sequence before stopping', wrap=190)
+
+                # network retry delay
+                dpg.add_spacer()
+                self.add_slider_text(
+                    tag='retry_delay',
+                    width=260, height=20,
+                    min_value=1, max_value=15,
+                    default_value=int(self.config.settings.get('network', 'retry_amount')),
+                    user_data=('retry delay: ',' second')
+                )
+                with dpg.tooltip(dpg.last_item()):
+                    dpg.add_text('max time retry waits for network state to change before trying again', wrap=190)
 
                 # online mode toggle
                 dpg.add_spacer()
@@ -166,7 +178,7 @@ class SettingsView(BaseView):
                 width=260, height=20,
                 min_value=100, max_value=1000,
                 default_value=int(self.config.settings.get('timings', 'disconnect_delay')),
-                user_data=('menu delay: ',' ms', ' ms')
+                user_data=('disconnect menu delay: ',' ms', ' ms')
             )
             with dpg.tooltip(dpg.last_item()):
                 dpg.add_text('time to wait for the menu to pop up after pressing menu key', wrap=190)
@@ -181,6 +193,17 @@ class SettingsView(BaseView):
                 user_data=('reconnect delay: ',' second'))
             with dpg.tooltip(dpg.last_item()):
                 dpg.add_text('time to wait before reconnectng to the match', wrap=190)
+
+            # reconnect press
+            dpg.add_spacer()
+            self.add_slider_text(
+                tag='reconnect_amount',
+                width=260, height=20,
+                min_value=1, max_value=5,
+                default_value=int(self.config.settings.get('timings', 'reconnect_amount')),
+                user_data=('reconnect press: ',' time'))
+            with dpg.tooltip(dpg.last_item()):
+                dpg.add_text('amount to press light attack key to rejoin the game', wrap=190)
 
         with dpg.group(horizontal=True, show=False):
             dpg.add_button(label='W', callback=self.callbacks.reset_general)

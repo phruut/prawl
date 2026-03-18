@@ -15,9 +15,11 @@ def get_definitions(interface):
     W_DC_DELAY = interface.get('disconnect_delay')
     W_RC_DELAY = interface.get('reconnect_delay')
     W_QU_DELAY = interface.get('queue_delay')
+    W_RETRY_DELAY = interface.get('retry_delay')
 
     C_START_SPAM = interface.get('game_start_spam')
     C_RETRY_AMOUNT = interface.get('retry_amount')
+    C_RC_AMOUNT = interface.get('reconnect_amount')
 
     K_LEFT = interface.get('key_left')
     K_UP = interface.get('key_up')
@@ -57,8 +59,8 @@ def get_definitions(interface):
             ],
             'wait_match_net': [
                 ('status', 'waiting for connection...'),
-                ('retry_net', {'mode': 'connect', 'attempts': W_QU_DELAY}, [
-                    ('wait', 1000),
+                ('retry_net', {'mode': 'connect', 'attempts': 1}, [
+                    ('wait', W_QU_DELAY * 1000),
                 ]),
                 ('countdown', W_GAMELOAD, 'stabilizing connection {}s...')
             ],
@@ -94,7 +96,7 @@ def get_definitions(interface):
                     ('wait', W_DC_DELAY),
                     ('press', K_UP),
                     ('press', K_LIGHT),
-                    ('wait', 1000)
+                    ('wait', W_RETRY_DELAY * 1000)
                 ]),
                 ('countdown', W_RC_DELAY, 'stabilizing disconnect {}s...')
             ],
@@ -105,7 +107,7 @@ def get_definitions(interface):
                     ('wait', W_DC_DELAY),
                     ('press', K_UP),
                     ('press', K_LIGHT),
-                    ('wait', 1000)
+                    ('wait', W_RETRY_DELAY * 1000)
                 ]),
                 ('countdown', W_RC_DELAY, 'stabilizing disconnect {}s...')
             ],
@@ -113,13 +115,13 @@ def get_definitions(interface):
             # reconnect to match
             'reconnect': [
                 ('countdown', W_RC_DELAY, 'reconnecting in {}...'),
-                ('status', 'pressing...'), ('press', K_LIGHT, {'count': 2})
+                ('status', 'pressing...'), ('press', K_LIGHT, {'count': C_RC_AMOUNT})
             ],
             'reconnect_net': [
                 ('status', 'attempting reconnect...'),
                 ('retry_net', {'mode': 'connect', 'attempts': C_RETRY_AMOUNT}, [
-                    ('press', K_LIGHT, {'count': 2}),
-                    ('wait', 1000)
+                    ('press', K_LIGHT, {'count': C_RC_AMOUNT}),
+                    ('wait', W_RETRY_DELAY * 1000)
                 ])
             ],
 

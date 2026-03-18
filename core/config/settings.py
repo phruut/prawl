@@ -9,12 +9,14 @@ class SettingsConfig(Base):
             'game_load_delay': 15,
             'disconnect_delay': 100,
             'reconnect_delay': 4,
+            'reconnect_amount': 2,
             'game_restart_delay': 4,
             'open_menu_hold': False,
         },
         'network': {
             'network_mode': False,
             'retry_amount': 5,
+            'retry_delay': 1,
             'early_dc_thresh': 90,
             'online_mode': False,
             'queue_delay': 300

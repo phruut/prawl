@@ -12,6 +12,7 @@ class KeySequence:
         self.backend = InputBackend(process, interface)
         self.network = None
         self.is_running = lambda: False
+        self.net_state = None
 
     def release_all(self):
         self.backend.release_all()
@@ -51,6 +52,12 @@ class KeySequence:
         start_time = time.perf_counter()
         while True:
             self._check_active()
+
+            # check network state during sleep
+            if self.net_state and self.network:
+                active = self.network.is_match_active()
+                if (self.net_state == 'disconnect' and not active) or (self.net_state == 'connect' and active):
+                    return
 
             current_time = time.perf_counter()
             remaining = (ms / 1000) - (current_time - start_time)
@@ -107,17 +114,20 @@ class KeySequence:
         mode = options.get('mode', '')
         attempts = options.get('attempts', 1)
 
-        for i in range(attempts):
-            self._check_active()
-            active = self.network.is_match_active()
-            if (mode == 'disconnect' and not active) or (mode == 'connect' and active):
-                return
-            self.interface.update_status(f'try {mode} ({i+1}/{attempts})')
+        self.net_state = mode
 
-            # do sub steps
-            for step in sub_steps:
-                self._execute_step(step)
+        try:
+            for i in range(attempts):
+                self._check_active()
+                active = self.network.is_match_active()
+                if (mode == 'disconnect' and not active) or (mode == 'connect' and active):
+                    return
+                self.interface.update_status(f'try {mode} ({i+1}/{attempts})')
 
-            #self._sleep(200)
+                # do sub steps
+                for step in sub_steps:
+                    self._execute_step(step)
+        finally:
+            self.net_state = None
 
         raise SequenceStopped()
