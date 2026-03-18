@@ -1,6 +1,6 @@
 gold and xp farming bot, afk farmer, macro, script, any legend, all legends, windows
 
-tested and working for **brawlhalla patch 10.01**\
+tested and working for **brawlhalla patch 10.04**\
 help/dev discord server: https://discord.gg/2HDmuqqq9p  
 video tutorial (old version): https://youtu.be/SWuSntfHioQ
 
