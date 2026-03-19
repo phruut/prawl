@@ -79,7 +79,7 @@ class SettingsView(BaseView):
                     tag='retry_delay',
                     width=260, height=20,
                     min_value=1, max_value=15,
-                    default_value=int(self.config.settings.get('network', 'retry_amount')),
+                    default_value=int(self.config.settings.get('network', 'retry_delay')),
                     user_data=('retry delay: ',' second')
                 )
                 with dpg.tooltip(dpg.last_item()):

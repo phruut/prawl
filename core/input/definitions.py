@@ -59,8 +59,8 @@ def get_definitions(interface):
             ],
             'wait_match_net': [
                 ('status', 'waiting for connection...'),
-                ('retry_net', {'mode': 'connect', 'attempts': 1}, [
-                    ('wait', W_QU_DELAY * 1000),
+                ('retry_net', {'mode': 'connect', 'attempts': W_QU_DELAY}, [
+                    ('wait', 1000),
                 ]),
                 ('countdown', W_GAMELOAD, 'stabilizing connection {}s...')
             ],
