@@ -66,32 +66,30 @@ class SettingsCallbacks:
 
         def listen_and_update():
             hotkey = self.listener.hotkey()
-            def update_ui():
 
-                # esc to cancel
-                save_hotkey = None
-                if hotkey in ['esc']:
-                    pass
-                else:
-                    # check if hotkey is already set to another one, then set config value
-                    save_hotkey = hotkey
-                    for tag in key_names:
-                        existing_val = self.interface.get(tag)
-                        if existing_val == hotkey:
-                            self.interface.configure(f'{tag}_button', label='...')
-                            self.interface.set(tag, '')
-                    self.interface.set(key_tag, save_hotkey)
-
-                # change the hotkey button label and tooltip back
-                text = ' '.join(reversed(key_tag.split('_')))
-                self.interface.set(f'{key_tag}_tooltip_text', f'change {text}')
-                self.interface.configure(f'{key_tag}_button', label=self.interface.get(key_tag))
-
-                # enable the buttons again
+            # esc to cancel
+            save_hotkey = None
+            if hotkey in ['esc']:
+                pass
+            else:
+                # check if hotkey is already set to another one, then set config value
+                save_hotkey = hotkey
                 for tag in key_names:
-                    self.interface.configure(f'{tag}_button', enabled=True)
+                    existing_val = self.interface.get(tag)
+                    if existing_val == hotkey:
+                        self.interface.configure(f'{tag}_button', label='...')
+                        self.interface.set(tag, '')
+                self.interface.set(key_tag, save_hotkey)
 
-            self.interface.queue_callback(update_ui)
+            # change the hotkey button label and tooltip back
+            text = ' '.join(reversed(key_tag.split('_')))
+            self.interface.set(f'{key_tag}_tooltip_text', f'change {text}')
+            self.interface.configure(f'{key_tag}_button', label=self.interface.get(key_tag))
+
+            # enable the buttons again
+            for tag in key_names:
+                self.interface.configure(f'{tag}_button', enabled=True)
+
         threading.Thread(target=listen_and_update, daemon=True).start()
 
     # esc or enter key select
