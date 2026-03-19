@@ -5,7 +5,7 @@ from .theme import ThemeConfig
 
 class Config:
     def __init__(self):
-        self.version = '0.3.1'
+        self.version = '0.3.2'
         self.settings = SettingsConfig()
         self.network = NetworkConfig()
         self.theme = ThemeConfig()
