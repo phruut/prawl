@@ -81,15 +81,25 @@ class Farmer:
 
     def _run(self):
         is_net = self.network and self.interface.get('network_mode')
+        skip_sequence = False
 
         if is_net:
             self.interface.update_status('starting network monitor')
             self.network.start()
-            self.network.update_base()
+            # wait to list connections
+            sleep(1)
+            # check if already in match before checking base connections
+            if self.network.is_match_active():
+                self.interface.update_status('match detected, resuming...')
+                skip_sequence = True
+            else:
+                self.network.update_base()
 
         try:
             while self.running:
-                self.keyseq.action(self.sequence, lambda: self.running, self.network)
+                if not skip_sequence:
+                    self.keyseq.action(self.sequence, lambda: self.running, self.network)
+                skip_sequence = False
 
                 # this is for the lobby setup part
                 if 'stop_farmer' in self.sequence:
