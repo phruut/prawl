@@ -1,5 +1,5 @@
 import dearpygui.dearpygui as dpg
-from .base import BaseView
+from ..base import BaseView
 
 class MainView(BaseView):
     def build(self):

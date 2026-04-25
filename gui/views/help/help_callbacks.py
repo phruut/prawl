@@ -6,6 +6,11 @@ class HelpCallbacks:
     interface: Any
     update: Any
 
+    def __init__(self, gui):
+        self.gui = gui
+        self.interface = gui.interface
+        self.update = gui.update
+
     def update_button(self):
         self.interface.configure('update_button', enabled=False)
         self.interface.configure('update_link', show=False)
@@ -14,8 +19,7 @@ class HelpCallbacks:
         thread.start()
 
     def update_worker(self):
-        results = self.update.check()
-        self.interface.queue_callback(lambda: self.update_post(None, None, results))
+        self.update.check(callback=lambda results: self.update_post(None, None, results))
 
     def update_post(self, sender, app_data, user_data):
         message, is_update_available = user_data

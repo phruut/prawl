@@ -2,6 +2,7 @@ import subprocess
 import time
 from typing import Any
 from core._utils import calculate_exp, calculate_gold
+from ...utils import CooldownTimer
 
 class MainCallbacks:
     config: Any
@@ -12,6 +13,17 @@ class MainCallbacks:
     hwnd: Any
     launch_count: int
     launch_timer: Any
+
+    def __init__(self, gui):
+        self.gui = gui
+        self.config = gui.config
+        self.interface = gui.interface
+        self.farmer = gui.farmer
+        self.process = gui.process
+        self.keyseq = gui.keyseq
+        self.launch_timer = CooldownTimer(2.0, self._launch_state_reset)
+        self.launch_count = 0
+        self.hwnd = None
 
     # sequence building thging
     # ----------------------------------------------
@@ -76,7 +88,6 @@ class MainCallbacks:
         self.farmer.stop()
         self.interface.run_button_update(self.farmer.running)
 
-    # i forgot where this was used lol
     def on_timer_stopped(self):
         self.interface.run_button_update(self.farmer.running)
 

@@ -1,5 +1,5 @@
 import dearpygui.dearpygui as dpg
-from .base import BaseView
+from ..base import BaseView
 
 class HelpView(BaseView):
     def build(self):
@@ -28,7 +28,7 @@ class HelpView(BaseView):
                 dpg.add_spacer()
                 with dpg.tree_node(label='why crew battle?'):
                     dpg.add_text('because it has 25 minute game option and the less time you spend in game menus, the more exp youre gonna get (i think lol)', wrap=0)
-                    self.hyperlink('cat 05/17/2024', 'https://discord.com/channels/829496409681297409/1240709211642527824/1240710940140503170')
+                    self.hyperlink('jam 05/17/2024', 'https://discord.com/channels/829496409681297409/1240709211642527824/1240710940140503170')
                     dpg.add_text('xp and gold requires active participation and different modes calculate participation differently so bot is too dumb for ffa basically, because ffa requires actually doing damage and kills', wrap=0)
                     self.hyperlink('sovamorco 10/08/2023', 'https://discord.com/channels/829496409681297409/829503904190431273/1160557662145097898')
 

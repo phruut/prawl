@@ -1,6 +1,7 @@
 import winsound
 import threading
 from typing import Any
+from ...utils import CooldownTimer
 
 class SettingsCallbacks:
     interface: Any
@@ -9,6 +10,18 @@ class SettingsCallbacks:
     farmer: Any
     process: Any
     hwnd: Any
+
+    def __init__(self, gui):
+        self.gui = gui
+        self.config = gui.config
+        self.interface = gui.interface
+        self.farmer = gui.farmer
+        self.process = gui.process
+        self.keyseq = gui.keyseq
+        self.listener = gui.listener
+        self.timing_timer = CooldownTimer(2.0, self._general_state_reset)
+        self.timing_count = 0
+        self.hwnd = None
 
     # ui settings tab buttons
     # ----------------------------------------------
@@ -153,6 +166,11 @@ class SettingsCallbacks:
             self.interface.hide('max_games_amount')
 
     # lobby setup buttons
+    def stop_button(self):
+        self.keyseq.release_all(self.hwnd)
+        self.farmer.stop()
+        self.interface.run_button_update(self.farmer.running)
+
     def mini_lobby_setup_start(self):
         self.hwnd = self.process.get_hwnd()
         if self.hwnd:
@@ -166,3 +184,31 @@ class SettingsCallbacks:
             self.interface.configure('run_button', label='ä')
             self.interface.configure('run_button_tooltip', default_value='stop')
             self.farmer.start(0, ['lobby_setup_gamerule', 'lobby_setup_lobby', 'lobby_setup_exit', 'lobby_setup_party', 'stop_farmer'])
+
+    # general settings reset
+    # ----------------------------------------------
+
+    def _general_state_reset(self):
+        self.timing_count = 0
+        self.interface.configure('reset_general_button_text', show=False)
+        self.interface.configure('reset_general_button_tooltip', default_value='reset all general settings')
+
+    def reset_general(self):
+        self.timing_count += 1
+        if self.timing_count == 1:
+            self.interface.configure('reset_general_button_text', show=True)
+            self.interface.configure('reset_general_button_tooltip', default_value='click again to reset')
+            self.timing_timer.start()
+        elif self.timing_count == 2:
+            self.interface.configure('reset_general_button_text', show=False)
+            self.interface.configure('reset_general_button_tooltip', default_value='reset all general settings')
+            self.interface.set('start_spam', 10)
+            self.interface.set('wait_restart', 4)
+            self.interface.set('wait_gameload', 15)
+            self.interface.set('menu_key_presses', 2)
+            self.interface.set('wait_disconnect', 100)
+            self.interface.set('wait_reconnect', 4)
+            self.interface.set('keypress_hold', 70)
+            self.interface.set('keypress_delay', 150)
+            self.timing_count = 0
+            self.timing_timer.cancel()

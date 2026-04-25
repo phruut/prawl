@@ -1,6 +1,6 @@
 
 import dearpygui.dearpygui as dpg
-from .base import BaseView
+from ..base import BaseView
 
 class SettingsView(BaseView):
     def build(self):
