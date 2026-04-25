@@ -48,7 +48,7 @@ if __name__ == '__main__' and get_platform():
     pywinstyles.change_title_color(None, config.theme.to_hex(config.theme.get_col('colors', 'text_secondary_disabled')))
 
     if config.settings.get('other', 'auto_launch'):
-        gui.callbacks.launch_button()
+        gui.main_callbacks.launch_button()
 
     dpg.start_dearpygui()
     dpg.destroy_context()
