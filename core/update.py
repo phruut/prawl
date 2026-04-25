@@ -13,7 +13,7 @@ class Update:
         # i forgot where i got this off from
         return tuple(map(int, version.split('.')))
 
-    def check(self):
+    def check(self, callback=None):
         try:
             response = requests.get(self.api_url, timeout=5)
             response.raise_for_status()
@@ -23,18 +23,21 @@ class Update:
             self.release_url = data.get('html_url')
 
             if not self.latest_version:
-                return 'couldnt get latest version', False
-
-            if self._version_parse(self.latest_version) > self._version_parse(self.current_version):
-                return f'update available: {self.latest_version}', True
+                result = 'couldnt get latest version', False
+            elif self._version_parse(self.latest_version) > self._version_parse(self.current_version):
+                result = f'update available: {self.latest_version}', True
             elif self._version_parse(self.latest_version) == self._version_parse(self.current_version):
-                return f'up to date! ({self.current_version})', False
+                result = f'up to date! ({self.current_version})', False
             else:
-                return f'mystery version :o ({self.current_version})', False
+                result = f'mystery version :o ({self.current_version})', False
 
         except requests.exceptions.RequestException:
-            return 'could not connect to server', False
+            result = 'could not connect to server', False
         except json.JSONDecodeError:
-            return 'invalid response from server', False
+            result = 'invalid response from server', False
         except Exception:
-            return 'unexpected error occurred', False
+            result = 'unexpected error occurred', False
+
+        if callback:
+            callback(result)
+        return result
