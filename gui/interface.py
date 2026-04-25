@@ -9,6 +9,15 @@ class Interface:
     def set(self, tag, value):
         if dpg.does_item_exist(tag):
             dpg.set_value(tag, value)
+            user_data = dpg.get_item_user_data(tag)
+            if isinstance(user_data, tuple) and len(user_data) == 3 and isinstance(user_data[0], str):
+                prefix, singular, plural = user_data
+                if isinstance(value, float):
+                    val_text = f'{value:.2f}'
+                else:
+                    val_text = f'{value}'
+                suffix = singular if value == 1 else plural
+                dpg.configure_item(tag, format=f'{prefix}{val_text}{suffix}')
 
     def configure(self, tag, **kwargs):
         if dpg.does_item_exist(tag):
