@@ -1,4 +1,5 @@
 import winsound
+import dearpygui.dearpygui as dpg
 import threading
 import logging
 from typing import Any
@@ -26,16 +27,64 @@ class SettingsCallbacks:
         self.timing_count = 0
         self.hwnd = None
 
+        self._tab_heights = {
+            'settings_loop_group': 375,
+            'settings_input_group': 198,
+            'settings_sound_group': 170,
+            'settings_other_group': 269,
+        }
+
+        self._item_heights = {
+            'network_mode_group': {
+                True: 109,
+                False: 0,
+            },
+            'online_mode_group': {
+                True: 28,
+                False: 0,
+            },
+            'rate_limit_wait_group': {
+                True: 28,
+                False: 0,
+            },
+            'rate_limit_wait_time': {
+                True: 28,
+                False: 0,
+            },
+            'max_games_amount': {
+                True: 28,
+                False: 0,
+            },
+        }
+
+        self._last_visible_items = {}
+
     # ui settings tab buttons
     # ----------------------------------------------
 
+    def _is_visible(self, tag):
+        if not dpg.does_item_exist(tag):
+            return False
+        if not dpg.is_item_shown(tag):
+            return False
+        parent = dpg.get_item_parent(tag)
+        if parent and dpg.does_item_exist(parent):
+            return self._is_visible(parent)
+        return True
+
+    def _recalc_settings_height(self):
+        base_height = self._tab_heights.get(self.gui.last_settings_tab_group, 484)
+        height_deltas = 0
+        for tag, heights in self._item_heights.items():
+            if self._is_visible(tag):
+                height_deltas += heights.get(True, 0)
+            else:
+                height_deltas += heights.get(False, 0)
+        new_height = base_height + height_deltas
+        self.interface.set_viewport_height(new_height)
+        self.gui.last_settings_tab_height = new_height
+
     def settings_tab_button(self, sender, app_data, user_data):
-        tabs_height = {
-            'settings_loop_group': 484,
-            'settings_input_group': 198,
-            'settings_sound_group': 170,
-            'settings_other_group': 320,
-        }
         tabs = {
             'settings_tab_loop_button':  'settings_loop_group',
             'settings_tab_input_button': 'settings_input_group',
@@ -46,8 +95,8 @@ class SettingsCallbacks:
             if button_id == sender:
                 self.interface.bind_item_theme(button_id, '__activeButtonTheme')
                 self.interface.show(group_id)
-                self.interface.set_viewport_height(tabs_height[group_id])
-                self.gui.last_settings_tab_height = tabs_height[group_id]
+                self.gui.last_settings_tab_group = group_id
+                self._recalc_settings_height()
             else:
                 self.interface.bind_item_theme(button_id, 0)
                 self.interface.hide(group_id)
@@ -57,11 +106,13 @@ class SettingsCallbacks:
     # online mode toggle
     def toggle_online_mode(self, sender, app_data, user_data):
         self.interface.configure('online_mode_group', show=app_data)
+        self._recalc_settings_height()
 
     # network mode toggle
     def toggle_network_mode(self, sender, app_data, user_data):
         self.interface.configure('network_mode_group', show=app_data)
         self.update_threshold_tooltip()
+        self._recalc_settings_height()
 
     # threshold calculate
     def update_threshold_tooltip(self, sender=None, app_data=None):
@@ -156,6 +207,7 @@ class SettingsCallbacks:
             self.interface.show('rate_limit_wait_group')
         else:
             self.interface.hide('rate_limit_wait_group')
+        self._recalc_settings_height()
 
     def rate_limit_wait(self, sender, app_data, user_data):
         if app_data:
@@ -166,6 +218,7 @@ class SettingsCallbacks:
             self.interface.hide('rate_limit_wait_time_spacer')
             self.interface.hide('rate_limit_wait_time_tooltip')
             self.interface.hide('rate_limit_wait_time')
+        self._recalc_settings_height()
 
     # max game limit
     def max_games(self, sender, app_data, user_data):
@@ -177,6 +230,7 @@ class SettingsCallbacks:
             self.interface.hide('max_games_spacer')
             self.interface.hide('max_games_tooltip')
             self.interface.hide('max_games_amount')
+        self._recalc_settings_height()
 
     # lobby setup buttons
     def stop_button(self):

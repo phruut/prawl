@@ -424,7 +424,7 @@ class SettingsView(BaseView):
             )
             with dpg.tooltip(ts.id):
                 dpg.add_text('detects if you are rate limited in exp/gold')
-            with dpg.group(tag='rate_limit_wait_group'):
+            with dpg.group(tag='rate_limit_wait_group', show=bool(self.config.settings.get('other', 'rate_limit_detect'))):
                 dpg.add_spacer()
                 ts = self.add_toggle(
                     tag='rate_limit_wait',
@@ -434,7 +434,7 @@ class SettingsView(BaseView):
                 )
                 with dpg.tooltip(ts.id):
                     dpg.add_text('waits for rate limit reset and starts farming')
-                dpg.add_spacer(height=0, tag='rate_limit_wait_time_spacer')
+                dpg.add_spacer(height=0, tag='rate_limit_wait_time_spacer', show=False)
                 self.add_slider_text(
                     tag='rate_limit_wait_time',
                     width=260, height=20,

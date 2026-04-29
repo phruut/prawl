@@ -39,7 +39,8 @@ class MainGUI:
         self.settings_view = SettingsView(config, interface, self.settings_callbacks, fonts)
         self.help_view = HelpView(config, interface, self.help_callbacks, fonts)
 
-        self.last_settings_tab_height = 484
+        self.last_settings_tab_height = 375 # default fallback
+        self.last_settings_tab_group = 'settings_loop_group'
 
         self._create_widgets()
 
@@ -64,7 +65,7 @@ class MainGUI:
         self.interface.hide('main_group')
         self.interface.show('settings_group')
         self.interface.hide('help_group')
-        self.interface.set_viewport_height(self.last_settings_tab_height)
+        self.settings_callbacks._recalc_settings_height()
 
     def _show_help_group(self, sender=None, app_data=None, user_data=None):
         self.interface.hide('main_group')
