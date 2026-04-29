@@ -1,6 +1,6 @@
 gold and xp farming bot, afk farmer, macro, script, any legend, all legends, windows
 
-tested and working on [brawlhalla patch 10.05](https://www.brawlhalla.com/news/bloomhalla-26)\
+tested and working on [brawlhalla patch 10.06](https://www.brawlhalla.com/news/bloomhalla-26)\
 help/dev discord server: https://discord.gg/2HDmuqqq9p  
 video tutorial (old version): https://youtu.be/SWuSntfHioQ
 
@@ -31,21 +31,20 @@ _please see the [wiki](https://github.com/phruut/prawl/wiki) for more informatio
 
 main
 - [ ] python installation video asdkjhgakshgasgs
-- [ ] finish adding logging
+- [x] finish adding logging (half way there)
 - [ ] check for updates on server host info directly from this repository
 
 qol?
-- [ ] starting mid match?
+- [x] starting mid match? (sorta? only for the beginning of the match)
 - [ ] in disconnect net, if it fails the first time, reduce the timer by the amount of time waited.
-- [ ] legends / user data (exp, gold, time spent, etc)
+- [ ] legends / user data (total exp, gold, time spent, etc)
 - [ ] headless mode?
 
 soon
-- [ ] update slider text based on set_value commands too
+- [x] update slider text based on set_value commands too
 - [ ] automatic colors based on windows theme accent color
 - [ ] setting profiles
 - [ ] customizable themes page, basically have 3-4 main colors, and adjust or give variations to them
-
 
 ## 🔎 download
 you can find the (old) compiled farm.py in the [releases page](https://github.com/phruut/prawl/releases), or [click here to download](https://github.com/phruut/prawl/releases/download/241209/farm_1209.exe)
