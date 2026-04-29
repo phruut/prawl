@@ -25,8 +25,6 @@ def setup_logger(name='prawl', level=logging.INFO):
         '%(asctime)s [%(levelname)s] [%(filename)s:%(lineno)d] %(message)s'
     ))
     logger.addHandler(ch)
-
-    logger.info('-------------------------------------------')
     logger.info('logger started')
     return logger
 

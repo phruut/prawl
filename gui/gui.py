@@ -20,16 +20,16 @@ class MainGUI:
         create_themes(config)
         self.main_font, self.icon_font = create_fonts(config)
 
-        # create per-view callbacks
+        # create view callbacks
         self.main_callbacks = MainCallbacks(self)
         self.settings_callbacks = SettingsCallbacks(self)
         self.help_callbacks = HelpCallbacks(self)
 
-        # attach nav callbacks so views can call self.callbacks.show_*_group
+        # attach nav callbacks so views can call self.callbacks.show_something_group
         for cb in (self.main_callbacks, self.settings_callbacks, self.help_callbacks):
-            cb.show_main_group = self._show_main_group
-            cb.show_settings_group = self._show_settings_group
-            cb.show_help_group = self._show_help_group
+            setattr(cb, 'show_main_group', self._show_main_group)
+            setattr(cb, 'show_settings_group', self._show_settings_group)
+            setattr(cb, 'show_help_group', self._show_help_group)
 
         self.farmer.set_on_stop_callback(self.main_callbacks.on_timer_stopped)
 

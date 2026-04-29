@@ -9,6 +9,7 @@ import logging
 logger = logging.getLogger('prawl')
 
 class Network:
+    """monitors network connections for process, tracks connections to specific ports and hosts"""
     def __init__(self, config, process):
         self.config = config
         self.process = process
@@ -20,18 +21,22 @@ class Network:
         self._active_connections = set()
         self._base_connections = set()
 
+        # dns cache to avoid repeating lookups
         self._dns_cache = {}
         self._dns_cache_time = {}
         self._dns_cache_ttl = 60
 
+        # check ports to monitor gfrom config
         port_range = self.config.network.get('network', 'match_ports')
         start_port, end_port = map(int, port_range.split('-'))
         self._target_ports = range(start_port, end_port + 1)
 
+        # regex pattern to match hostnames
         host_pattern_str = self.config.network.get('network', 'host_patterns')
         self._host_pattern = re.compile(host_pattern_str)
 
     def start(self):
+        """start monitoring network connections in background thread"""
         if self._running:
             return
         logger.info(f'watching ports: {list(self._target_ports)}')
@@ -43,27 +48,31 @@ class Network:
         self._monitor_thread.start()
 
     def stop(self):
+        """stop monitoring and wait for background thread to finish"""
         self._running = False
         if self._monitor_thread and self._monitor_thread.is_alive():
             self._monitor_thread.join(timeout=1.0)
         self._monitor_thread = None
 
     def update_base(self):
+        """capture current connections as baseline"""
         with self._lock:
             self._base_connections = self._active_connections.copy()
         logger.debug(f'base updated, ignoring: {self._base_connections}')
 
     def is_match_active(self):
+        """check new connections outside baseline"""
         with self._lock:
             match_connections = self._active_connections - self._base_connections
         return len(match_connections) > 0
 
     def get_connections(self):
+        """return currently tracked connections"""
         with self._lock:
             return self._active_connections.copy()
 
     def _resolve_match(self, ip, port):
-        """ip to hostname, with caching"""
+        """resolve ip to hostname and cache it, returns 'hostname:port' if hostname matches, else none"""
         now = time.time()
 
         # check cache
@@ -86,6 +95,7 @@ class Network:
             if self._host_pattern.search(hostname):
                 return f"{hostname}:{port}"
         except herror:
+            # dns lookup failed, host not found
             self._dns_cache[ip] = None
             self._dns_cache_time[ip] = now
         except Exception as e:
@@ -94,15 +104,18 @@ class Network:
         return None
 
     def _scan_connections(self, proc):
-        """scan process for active inet connections matching target ports"""
+        """scan process for active inet connections matching target ports and hostname pattern"""
         matches = set()
         try:
+            # get all connections for process
             connections = proc.net_connections(kind='inet')
 
             for conn in connections:
+                # skips connections without remote address or not in target port range
                 if not conn.raddr or conn.raddr.port not in self._target_ports:
                     continue
 
+                # resolve ip to hostname, check if regex pattern match
                 match_id = self._resolve_match(conn.raddr.ip, conn.raddr.port)
                 if match_id:
                     matches.add(match_id)
@@ -116,11 +129,12 @@ class Network:
         return matches
 
     def _sync_state(self, current_set):
-        """compare current connections with cached state, logs diffs, updates cache"""
+        """compare current connections with cached state, also update cache"""
         with self._lock:
             if current_set == self._active_connections:
                 return
 
+            # calculate changes
             added = current_set - self._active_connections
             removed = self._active_connections - current_set
 
@@ -132,16 +146,19 @@ class Network:
             self._active_connections = current_set
 
     def _monitor_loop(self):
+        """background loop to scan for new connections"""
         cached_pid = None
         proc = None
 
         while self._running:
             pid = self.process.get_pid()
 
+            # get process reference if pid changed
             if pid != cached_pid:
                 proc = psutil.Process(pid) if pid else None
                 cached_pid = pid
 
+            # scan for matching connections
             current_set = self._scan_connections(proc) if proc else set()
             self._sync_state(current_set)
             sleep(self._check_interval)

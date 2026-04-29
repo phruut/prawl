@@ -87,7 +87,7 @@ class Farmer:
             self.interface.update_status('starting network monitor')
             self.network.start()
             # wait to list connections
-            sleep(1)
+            sleep(0.5)
             # check if already in match before checking base connections
             if self.network.is_match_active():
                 self.interface.update_status('match detected, resuming...')

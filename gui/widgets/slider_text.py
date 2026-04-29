@@ -15,7 +15,7 @@ class TextSlider:
         self._on_change(self.tag, default_value, user_data)
 
     def _on_change(self, sender, app_data, user_data=None):
-        prefix, singular, plural = dpg.get_item_user_data(sender)
+        prefix, singular, plural = dpg.get_item_user_data(sender) or ('', '', '')
 
         if isinstance(app_data, float):
             val_text = f'{app_data:.2f}'
@@ -53,7 +53,7 @@ class TextSliderWidth:
         self._on_change(self.tag, f_default_value, user_data)
 
     def _on_change(self, sender, app_data, user_data=None):
-        prefix, singular, plural = dpg.get_item_user_data(sender)
+        prefix, singular, plural = dpg.get_item_user_data(sender) or ('', '', '')
 
         if self.is_int:
             value = int(round(app_data))
