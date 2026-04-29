@@ -1,5 +1,6 @@
 import dearpygui.dearpygui as dpg
 import pywinstyles
+import logging
 from core.config import Config, get_platform
 from core.input import KeySequence
 from core.farmer import Farmer
@@ -15,13 +16,16 @@ def on_exit():
     config.settings.save_all()
     hwnd = process.get_hwnd()
     if farmer.running:
+        logger.info('stopping farmer')
         farmer.stop()
     if hwnd:
+        logger.info('release keys, show window if hidden')
         keyseq.release_all()
         process.show()
 
 if __name__ == '__main__' and get_platform():
     setup_logger()
+    logger = logging.getLogger('prawl')
     config = Config()
     interface = Interface()
     process = Process(config)
@@ -48,7 +52,10 @@ if __name__ == '__main__' and get_platform():
     pywinstyles.change_title_color(None, config.theme.to_hex(config.theme.get_col('colors', 'text_secondary_disabled')))
 
     if config.settings.get('other', 'auto_launch'):
+        logger.info('auto_launch enabled, launching brawlhalla')
         gui.main_callbacks.launch_button()
 
+    logger.info('starup completed')
     dpg.start_dearpygui()
     dpg.destroy_context()
+    logger.info('prawl closed')

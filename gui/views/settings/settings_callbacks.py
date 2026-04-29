@@ -1,7 +1,10 @@
 import winsound
 import threading
+import logging
 from typing import Any
 from ...utils import CooldownTimer
+
+logger = logging.getLogger('prawl')
 
 class SettingsCallbacks:
     interface: Any
@@ -67,6 +70,7 @@ class SettingsCallbacks:
     # change hotkey
     def hotkey_button(self, sender, app_data, user_data):
         key_tag = user_data
+        logger.info(f'hotkey button pressed | key: {key_tag}')
 
         # disable all hotkey buttons so they dont overlap
         key_names = ['key_menu', 'key_up', 'key_down', 'key_left', 'key_right', 'key_light', 'key_heavy', 'key_throw']
@@ -83,7 +87,7 @@ class SettingsCallbacks:
             # esc to cancel
             save_hotkey = None
             if hotkey in ['esc']:
-                pass
+                logger.info(f'hotkey cancelled | key: {key_tag}')
             else:
                 # check if hotkey is already set to another one, then set config value
                 save_hotkey = hotkey
@@ -93,6 +97,7 @@ class SettingsCallbacks:
                         self.interface.configure(f'{tag}_button', label='...')
                         self.interface.set(tag, '')
                 self.interface.set(key_tag, save_hotkey)
+                logger.info(f'hotkey saved | key: {key_tag} | value: {save_hotkey}')
 
             # change the hotkey button label and tooltip back
             text = ' '.join(reversed(key_tag.split('_')))
@@ -167,23 +172,30 @@ class SettingsCallbacks:
 
     # lobby setup buttons
     def stop_button(self):
+        logger.info('settings stop_button pressed')
         self.keyseq.release_all(self.hwnd)
         self.farmer.stop()
         self.interface.run_button_update(self.farmer.running)
 
     def mini_lobby_setup_start(self):
+        logger.info('mini_lobby_setup_start pressed')
         self.hwnd = self.process.get_hwnd()
         if self.hwnd:
             self.interface.configure('run_button', label='ä')
             self.interface.configure('run_button_tooltip', default_value='stop')
             self.farmer.start(0, ['lobby_setup_gamerule', 'lobby_setup_exit', 'stop_farmer'])
+        else:
+            logger.warning('brawlhalla window not found')
 
     def full_lobby_setup_start(self):
+        logger.info('full_lobby_setup_start pressed')
         self.hwnd = self.process.get_hwnd()
         if self.hwnd:
             self.interface.configure('run_button', label='ä')
             self.interface.configure('run_button_tooltip', default_value='stop')
             self.farmer.start(0, ['lobby_setup_gamerule', 'lobby_setup_lobby', 'lobby_setup_exit', 'lobby_setup_party', 'stop_farmer'])
+        else:
+            logger.warning('brawlhalla window not found')
 
     # general settings reset
     # ----------------------------------------------

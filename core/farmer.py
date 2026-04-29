@@ -39,14 +39,17 @@ class Farmer:
         required_keys = ['key_up', 'key_left', 'key_down', 'key_right', 'key_light', 'key_heavy', 'key_throw']
         for key in required_keys:
             if not self.interface.get(key):
+                logger.error(f'missing keybind: {key}')
                 self.interface.update_status('failed! set keybinds!')
                 return
 
         self.hwnd = self.process.get_hwnd()
         if not self.hwnd:
+            logger.error('brawlhalla window not found')
             self.interface.update_status('brawlhalla window not found')
             return
 
+        logger.info(f'starting farmer | time: {minutes}min | hwnd: {self.hwnd}')
         self.initial_time = minutes * 60
         self.remaining_time = self.initial_time
         self.sequence = sequence
@@ -57,7 +60,7 @@ class Farmer:
         self._timer_thread.start()
 
     def stop(self):
-        # disable gui updates
+        logger.info('stopping farmer')
         self.interface.update_status('stopping...')
 
         if self.on_stop_callback:
@@ -77,6 +80,7 @@ class Farmer:
         if self.running:
             self.paused = not self.paused
             status = 'paused' if self.paused else 'resumed'
+            logger.info(f'farmer {status}')
             self.interface.update_status(status)
 
     def _run(self):
@@ -85,12 +89,14 @@ class Farmer:
 
         if is_net:
             self.interface.update_status('starting network monitor')
+            logger.info('starting network monitor')
             self.network.start()
             # wait to list connections
             sleep(0.5)
             # check if already in match before checking base connections
             if self.network.is_match_active():
                 self.interface.update_status('match detected, resuming...')
+                logger.info('match detected, skipping sequence')
                 skip_sequence = True
             else:
                 self.network.update_base()
@@ -103,6 +109,7 @@ class Farmer:
 
                 # this is for the lobby setup part
                 if 'stop_farmer' in self.sequence:
+                    logger.info('stop_farmer sequence detected, stopping')
                     self.stop()
                     return
                 if not self.running:
@@ -141,13 +148,16 @@ class Farmer:
                 connected = self.network.is_match_active()
                 if not connected:
                     if current_duration < threshold_time_seconds:
+                        logger.warning('early disconnect detected')
                         self.interface.update_status('early disconnect detected')
                         self.stop()
                         return False
                     else:
+                        logger.info('match completed (network)')
                         return True
             else:
                 if self.remaining_time == 0:
+                    logger.info('match completed (timer)')
                     return True
 
             status_text = f'active ({mins}:{secs:02})'
@@ -164,6 +174,7 @@ class Farmer:
         return False
 
     def _match_end(self):
+        logger.info(f'match ended | game: {self.total_games}')
         if self.interface.get('timer_sound'):
             winsound.Beep(self.interface.get('beep_frequency'), self.interface.get('beep_duration'))
 
@@ -183,6 +194,7 @@ class Farmer:
 
     def _limits(self):
         if self.interface.get('rate_limit_detect') and self.current_exp >= 13000:
+            logger.warning('exp rate limit detected')
             self.interface.update_status('exp rate limit...')
             if self.interface.get('rate_limit_wait'):
                 wait_remaining = self.interface.get('rate_limit_wait_time') * 60
@@ -193,10 +205,12 @@ class Farmer:
                     wait_remaining -= 1
                 self.current_exp = 0
             else:
+                logger.info('rate limit reached, stopping farmer')
                 self.stop()
                 return True
 
         if self.interface.get('max_games') and self.total_games >= self.interface.get('max_games_amount'):
+            logger.info(f'max games reached ({self.total_games})')
             self.interface.update_status('max games reached...')
             self.stop()
             return True

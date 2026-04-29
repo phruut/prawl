@@ -1,7 +1,10 @@
 import time
+import logging
 from .definitions import get_definitions
 from .backend import InputBackend
 from .._utils import sleep
+
+logger = logging.getLogger('prawl')
 
 class SequenceStopped(Exception):
     pass
@@ -22,15 +25,17 @@ class KeySequence:
         self.network = network
         self.is_running = is_running_callback
         definitions = get_definitions(self.interface)
+        logger.info(f'action started | sequences: {sequence_names}')
 
         try:
             for seq_name in sequence_names:
                 self._check_active()
                 steps = definitions.get(seq_name, [])
+                logger.debug(f'executing sequence: {seq_name} | steps: {len(steps)}')
                 for step in steps:
                     self._execute_step(step)
         except SequenceStopped:
-            pass
+            logger.debug('sequence stopped')
 
     # helpers
     # -----------------------------------------------
@@ -39,6 +44,7 @@ class KeySequence:
         """runs a single step tuple to the handlers"""
         self._check_active()
         cmd, args = step[0], step[1:]
+        logger.debug(f'executing step | cmd: {cmd}')
 
         # find handler methods
         handler = getattr(self, f'_cmd_{cmd}', None)
@@ -49,6 +55,7 @@ class KeySequence:
         if ms <= 0:
             return
 
+        logger.debug(f'sleeping | ms: {ms}')
         start_time = time.perf_counter()
         while True:
             self._check_active()
@@ -57,6 +64,7 @@ class KeySequence:
             if self.net_state and self.network:
                 active = self.network.is_match_active()
                 if (self.net_state == 'disconnect' and not active) or (self.net_state == 'connect' and active):
+                    logger.debug(f'sleep interrupted by network state: {self.net_state}')
                     return
 
             current_time = time.perf_counter()

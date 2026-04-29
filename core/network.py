@@ -39,7 +39,7 @@ class Network:
         """start monitoring network connections in background thread"""
         if self._running:
             return
-        logger.info(f'watching ports: {list(self._target_ports)}')
+        logger.info(f'network monitor started | ports: {list(self._target_ports)}')
         self._running = True
         self._active_connections = set()
         self._dns_cache.clear()
@@ -49,6 +49,7 @@ class Network:
 
     def stop(self):
         """stop monitoring and wait for background thread to finish"""
+        logger.info('network monitor stopped')
         self._running = False
         if self._monitor_thread and self._monitor_thread.is_alive():
             self._monitor_thread.join(timeout=1.0)

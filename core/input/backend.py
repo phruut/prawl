@@ -67,13 +67,13 @@ class InputBackend:
             if self.interface.get('direct_input'):
                 try:
                     self.direct_kb.release(key_val)
-                except Exception:
-                    pass
+                except Exception as e:
+                    logger.warning(f'failed to release key (direct): {key_val} | {e}')
             elif hwnd:
                 try:
                     vk = resolve_key(key_val)
                     win32gui.SendMessage(hwnd, win32con.WM_KEYUP, vk, 0)
-                except Exception:
-                    pass
+                except Exception as e:
+                    logger.warning(f'failed to release key (win32): {key_val} | {e}')
 
         logger.info('released all keys')

@@ -1,8 +1,11 @@
 import subprocess
 import time
+import logging
 from typing import Any
 from core._utils import calculate_exp, calculate_gold
 from ...utils import CooldownTimer
+
+logger = logging.getLogger('prawl')
 
 class MainCallbacks:
     config: Any
@@ -70,6 +73,7 @@ class MainCallbacks:
     # ----------------------------------------------
 
     def run_button(self):
+        logger.info('run_button pressed')
         if self.farmer.running:
             self.farmer.stop()
             self.interface.run_button_update(self.farmer.running)
@@ -78,12 +82,15 @@ class MainCallbacks:
             self.hwnd = self.process.get_hwnd()
             if self.hwnd:
                 sequence = self._get_sequence('start')
+                logger.info(f'starting farmer | hwnd: {self.hwnd}')
                 self.farmer.start(self.interface.get('match_time'), sequence)
                 self.interface.run_button_update(self.farmer.running)
             else:
+                logger.warning('brawlhalla window not found')
                 self.interface.update_status('brawlhalla window not found')
 
     def stop_button(self):
+        logger.info('stop_button pressed')
         self.keyseq.release_all(self.hwnd)
         self.farmer.stop()
         self.interface.run_button_update(self.farmer.running)
@@ -95,10 +102,12 @@ class MainCallbacks:
     # ----------------------------------------------
 
     def oops_button(self):
+        logger.info('oops_button pressed')
         self.hwnd = self.process.get_hwnd()
         if self.hwnd and self.farmer.running:
             self.farmer.pause()
             sequence = self._get_sequence('oops')
+            logger.info('retry sequence triggered')
             self.keyseq.action(
                 sequence,
                 lambda: self.farmer.running,
@@ -106,6 +115,7 @@ class MainCallbacks:
             )
             self.farmer.pause()
         else:
+            logger.warning('oops_button failed | hwnd or farmer not running')
             self.interface.update_status('not running')
 
     # show / hide window
@@ -114,15 +124,18 @@ class MainCallbacks:
     def toggle_button(self):
         self.hwnd = self.process.get_hwnd()
         if not self.hwnd:
+            logger.warning('brawlhalla window not found')
             self.interface.update_status('brawlhalla window not found')
             return
         if self.process.visible():
             self.process.hide()
+            logger.info('brawlhalla window hidden')
             self.interface.update_status('brawlhalla window hidden')
             self.interface.configure('toggle_button', label='N')
             self.interface.configure('toggle_button_tooltip', default_value='show brawlhalla window')
         else:
             self.process.show()
+            logger.info('brawlhalla window shown')
             self.interface.update_status('brawlhalla window shown')
             self.interface.configure('toggle_button', label='O')
             self.interface.configure('toggle_button_tooltip', default_value='hide brawlhalla window')
@@ -138,14 +151,17 @@ class MainCallbacks:
         self.interface.configure('launch_button_tooltip', default_value=text)
 
     def launch_button(self):
+        logger.info('launch_button pressed')
         if self.process.running():
             self.launch_count += 1
             if self.launch_count == 1:
+                logger.info('brawlhalla already running, prompt to close')
                 self.interface.update_status('already running! (close?)')
                 self.interface.configure('launch_button', label='T')
                 self.interface.configure('launch_button_tooltip', default_value='click again to stop')
                 self.launch_timer.start()
             elif self.launch_count == 2:
+                logger.info('terminating brawlhalla')
                 self.interface.update_status('terminated brawlhalla')
                 self.interface.configure('launch_button', label='\\')
                 self.interface.configure('launch_button_tooltip', default_value='start brawlhalla')
@@ -154,10 +170,12 @@ class MainCallbacks:
                 self.launch_timer.cancel()
                 self.farmer.stop()
         else:
-            subprocess.run('cmd /c start steam://rungameid/291550', check=False, creationflags=0x08000000) # this hides the cmd window i think
+            logger.info('starting brawlhalla via steam')
+            subprocess.run('cmd /c start steam://rungameid/291550', check=False, creationflags=0x08000000)
             self.interface.update_status('starting brawlhalla...')
             self.interface.configure('launch_button_tooltip', default_value='stop brawlhalla')
             while not self.process.running():
                 time.sleep(0.5)
             self.hwnd = self.process.get_hwnd()
+            logger.info(f'brawlhalla started | hwnd: {self.hwnd}')
             self.interface.update_status('brawlhalla started')

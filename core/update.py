@@ -1,5 +1,8 @@
 import requests
 import json
+import logging
+
+logger = logging.getLogger('prawl')
 
 class Update:
     def __init__(self, config):
@@ -31,11 +34,14 @@ class Update:
             else:
                 result = f'mystery version :o ({self.current_version})', False
 
-        except requests.exceptions.RequestException:
+        except requests.exceptions.RequestException as e:
+            logger.error(f'update check failed | request exception: {e}')
             result = 'could not connect to server', False
-        except json.JSONDecodeError:
+        except json.JSONDecodeError as e:
+            logger.error(f'update check failed | json decode error: {e}')
             result = 'invalid response from server', False
-        except Exception:
+        except Exception as e:
+            logger.error(f'update check failed | unexpected error: {e}')
             result = 'unexpected error occurred', False
 
         if callback:
