@@ -30,6 +30,12 @@ class SettingsCallbacks:
     # ----------------------------------------------
 
     def settings_tab_button(self, sender, app_data, user_data):
+        tabs_height = {
+            'settings_loop_group': 484,
+            'settings_input_group': 198,
+            'settings_sound_group': 170,
+            'settings_other_group': 320,
+        }
         tabs = {
             'settings_tab_loop_button':  'settings_loop_group',
             'settings_tab_input_button': 'settings_input_group',
@@ -40,6 +46,8 @@ class SettingsCallbacks:
             if button_id == sender:
                 self.interface.bind_item_theme(button_id, '__activeButtonTheme')
                 self.interface.show(group_id)
+                self.interface.set_viewport_height(tabs_height[group_id])
+                self.gui.last_settings_tab_height = tabs_height[group_id]
             else:
                 self.interface.bind_item_theme(button_id, 0)
                 self.interface.hide(group_id)

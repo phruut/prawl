@@ -38,6 +38,9 @@ class Interface:
     def set_viewport_always_top(self, state: bool):
         dpg.set_viewport_always_top(state)
 
+    def set_viewport_height(self, height):
+        dpg.set_viewport_height(height)
+
     # specific tags i forgot why i did ts </3
     def run_button_update(self, state: bool):
         if state:
