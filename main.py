@@ -19,7 +19,6 @@ def on_exit():
         logger.info('stopping farmer')
         farmer.stop()
     if hwnd:
-        logger.info('release keys, show window if hidden')
         keyseq.release_all()
         process.show()
 
