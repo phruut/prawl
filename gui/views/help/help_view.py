@@ -38,6 +38,8 @@ class HelpView(BaseView):
                     dpg.add_text('*most people are reporting a wait time between 30 to 60 minutes', wrap=0)
 
             dpg.add_spacer()
+            self.hyperlink('support me!', 'https://ko-fi.com/phruut', icon='.', color=(255, 114, 121))
+            dpg.add_spacer()
             with dpg.group(horizontal=True):
                 dpg.add_button(label='check for updates', tag='update_button', callback=self.callbacks.update_button)
                 dpg.add_text('', tag='update_status_text')

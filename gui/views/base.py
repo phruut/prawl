@@ -51,12 +51,10 @@ class BaseView:
             **kwargs
         )
 
-    def hyperlink(self, text, address):
+    def hyperlink(self, text, address, icon='(', color=(100, 149, 238)):
         with dpg.group(horizontal=True):
-            # clip icon
-            dpg.add_text('(', color=(100, 149, 238))
+            dpg.add_text(icon, color=color)
             dpg.bind_item_font(dpg.last_item(), self.icon_font)
 
-            # hyperlink base
             dpg.add_button(label=text, callback=lambda: webbrowser.open(address))
             dpg.bind_item_theme(dpg.last_item(), "__hyperlinkTheme")
